@@ -1,0 +1,6 @@
+# sim runtime dependency (everything else the sim uses is the Python standard library).
+# jsonschema is used only by the transport-binding path (Keeper.acknowledge_delivery,
+# exercised by edge_10). Pinned below 5 because the sim relies on jsonschema.RefResolver,
+# which is deprecated in 4.18+ and slated for removal in 5.x.
+# Setup and run instructions: see sim/README.md.
+jsonschema>=4,<5

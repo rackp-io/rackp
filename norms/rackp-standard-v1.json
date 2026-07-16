@@ -1,0 +1,265 @@
+{
+  "$schema": "./norm_profile.schema.json",
+  "profile_id": "rackp.standard.v1",
+  "jurisdiction_code": "rackp",
+  "domain": "general",
+  "profile_version": "1.0.0",
+  "effective_date": "2026-02-26",
+  "issuer": {
+    "name": "RACK Protocol",
+    "url": "https://rackp.io/norms/rackp-standard-v1.json",
+    "contact": "https://github.com/rackp-io/rackp/issues"
+  },
+  "license": "CC0-1.0",
+  "source_regulations": [
+    {
+      "name": "RACK Protocol RFC-0001",
+      "article": "Section 9.1",
+      "url": "https://github.com/rackp-io/rackp/blob/main/docs/RFC-0001.md"
+    }
+  ],
+  "appeal_deadline_hours": {
+    "min": 72,
+    "max": 720
+  },
+  "norms": [
+    {
+      "norm_id": "RACKP-STD-001",
+      "name": "Evidence Integrity",
+      "description": "The hash of data submitted in EVIDENCE_SUBMISSION must match the data_hash of the corresponding CLAIM_ANCHOR stored in the Keeper. A mismatch is treated as a verification failure.",
+      "severity": "CRITICAL",
+      "applies_to": ["ACTOR", "CLAIMANT"]
+    },
+    {
+      "norm_id": "RACKP-STD-002",
+      "name": "Anchoring Continuity",
+      "description": "During a session, the sequence_number of CLAIM_ANCHOR records must not contain unnatural gaps or breaks. Data from any interval where a gap is detected may not be accepted as evidence.",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR", "CLAIMANT"]
+    },
+    {
+      "norm_id": "RACKP-STD-003",
+      "name": "Statement Consistency",
+      "description": "The content of the statement field in EVIDENCE_SUBMISSION must not contradict the payload. If a significant discrepancy is found between the statement and the evidence, the Referee may treat this as a dishonest declaration.",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR", "CLAIMANT"]
+    },
+    {
+      "norm_id": "RACKP-STD-004",
+      "name": "Query Response Obligation",
+      "description": "A terminal must respond to EVIDENCE_QUERY_REQUEST from a Referee with EVIDENCE_SUBMISSION. Failure to respond without legitimate justification may be treated by the Referee as a basis for increasing fault contribution.",
+      "severity": "CRITICAL",
+      "applies_to": ["ACTOR", "CLAIMANT"]
+    },
+    {
+      "norm_id": "RACKP-STD-005",
+      "name": "Norm Conformity",
+      "description": "The jurisdiction_code and domain of the Norm profile declared at session start must not significantly deviate from the actual operational environment and scope. If a deviation is found, the Referee must note this in the CONTRIBUTION_RESULT.",
+      "severity": "MEDIUM",
+      "applies_to": ["ACTOR", "CLAIMANT"]
+    },
+    {
+      "norm_id": "RACKP-STD-006",
+      "name": "Assessment Disclosure",
+      "description": "The Referee must record in CONTRIBUTION_RESULT the applied Norm profile ID, the basis for the assessment, and the evidence_sufficiency evaluation. Omission of any of these fields is treated as a violation of the disclosure obligation. Additionally, when the Referee deviates from the reference values in the Verification Outcome Table — including adjustments based on contextual causal analysis — the basis for that deviation must be documented in assessment.detailed_report. This documentation should describe which factors (norm compliance outcomes, causal context, external factors) influenced the weighting and why.",
+      "severity": "CRITICAL",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-007",
+      "name": "Keeper Logging Obligation",
+      "description": "All actions taken by a Referee must be recorded in the Keeper. Any assessment action not routed through the Keeper is considered invalid.",
+      "severity": "CRITICAL",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-008",
+      "name": "Self-Assessment Prohibition",
+      "description": "A Referee must not assess any case in which it is itself a party. If a conflict of interest is detected, the Referee must decline the case and record the reason in the Keeper.",
+      "severity": "CRITICAL",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-009",
+      "name": "Norm Fetch URL Declaration",
+      "description": "At session start, the terminal must include norm_fetch_url in the SESSION_START CLAIM_ANCHOR alongside norm_profile_id. This URL must be the actual endpoint from which the Norm Profile was fetched. Omission of norm_fetch_url is treated as incomplete session initialization and constitutes a technical violation. The Keeper records this URL for post-hoc traceability of Norm Profile provenance.",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR", "CLAIMANT"]
+    },
+    {
+      "norm_id": "RACKP-STD-010",
+      "name": "FEE_DEPOSIT Obligation",
+      "description": "Upon being named as a party to an incident, each party must send FEE_DEPOSIT to the Keeper for the amount expected of its role under the Referee's declared fee.deposit allocation or the STD-029 default. Under the default allocation the requesting party (the Claimant in an initial assessment) bears the full fee.amount and the counterparty owes nothing and is NOT_REQUIRED; a party owes a deposit only where an allocation assigns its role a positive share. Assessment may proceed on the requester's deposit alone; non-payment by a party with an expected share does not block the process. A party that fails to deposit its expected share is recorded as non-compliant by the Keeper via FEE_STATUS_RESULT, and the Referee must disclose each party's deposit status in the fee_compliance field of CONTRIBUTION_RESULT. Non-payment is not a technical violation: it must not be factored into the fault values and must not be listed in technical_violation. The fault values measure deviation from the declared Norms in the incident itself; participation funding is a separate fact, recorded and disclosed only. Any consequence of non-payment (insurance pricing, contractual penalties, judicial inference of non-cooperation) is left to application layers and external institutions. No forced payment is implemented at the protocol level.",
+      "severity": "LOW",
+      "applies_to": ["ACTOR", "CLAIMANT"]
+    },
+    {
+      "norm_id": "RACKP-STD-011",
+      "name": "Appeal Deadline Minimum",
+      "description": "The Referee must set additional_appeal_limit_datetime to at least 72 hours after CONTRIBUTION_RESULT issuance (Standard Norm minimum). If parties have declared Norm Profiles with appeal_deadline_hours.min values, the Referee must adopt the maximum of all declared minimums, capped at 720 hours (Standard Norm maximum). If no Norm Profile declares a value, 72 hours applies as the default.",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-012",
+      "name": "Keeper Immutability",
+      "description": "A Keeper must not modify or delete any record once stored. Retroactive alteration of anchoring records, verification results, or escrow state is treated as a critical protocol violation regardless of the requester's identity.",
+      "severity": "CRITICAL",
+      "applies_to": ["KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-013",
+      "name": "Keeper Verification Honesty",
+      "description": "A Keeper must report VERIFICATION_QUERY results accurately and must not conceal hash mismatches or anchoring gaps. Returning a positive match for a hash that does not exist in storage, or suppressing a detected mismatch, is treated as a critical protocol violation.",
+      "severity": "CRITICAL",
+      "applies_to": ["KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-014",
+      "name": "Keeper Query Response Obligation",
+      "description": "A Keeper must respond to VERIFICATION_QUERY and REFEREE_STATS_QUERY from any Referee. Refusing or indefinitely delaying a response without legitimate justification is treated as a protocol violation. This obligation applies regardless of whether the querying Referee is known to the Keeper.",
+      "severity": "HIGH",
+      "applies_to": ["KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-015",
+      "name": "Keeper Non-Selective Disclosure",
+      "description": "When responding to a query, a Keeper must either return all records matching the query criteria or explicitly refuse the entire request. Selectively omitting records from a response — for example, returning only records favorable to a particular party — is treated as a protocol violation equivalent to tampering.",
+      "severity": "HIGH",
+      "applies_to": ["KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-016",
+      "name": "Keeper Escrow Integrity",
+      "description": "A Keeper must not withhold, redirect, or apply discretionary holds on escrowed FEE_DEPOSIT funds beyond what is required by the protocol (i.e., pending appeal within additional_appeal_limit_datetime). Releasing funds to a party other than the designated Referee, or delaying release after the appeal deadline without an active ASSESSMENT_APPEAL, is treated as a critical protocol violation.",
+      "severity": "CRITICAL",
+      "applies_to": ["KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-017",
+      "name": "Evidence Retention During Appeal Period",
+      "description": "A Referee must retain all evidence submitted via EVIDENCE_SUBMISSION for a given incident until additional_appeal_limit_datetime has elapsed and no valid ASSESSMENT_APPEAL is pending. Evidence must not be deleted or made inaccessible while an appeal is in progress. Failure to retain evidence through the appeal period is treated as a protocol violation that invalidates the appeal process.",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-018",
+      "name": "CONTRIBUTION_RESULT Retention Period",
+      "description": "A Referee must retain the full CONTRIBUTION_RESULT document for at least 5 years from the date of issuance. This obligation applies to the assessment document itself; raw evidence content submitted via EVIDENCE_SUBMISSION MAY be deleted once additional_appeal_limit_datetime has elapsed and no appeal is pending. Industry-specific Norm Profiles may extend this minimum retention period. The 5-year baseline aligns with the claim filing hard cutoff (STD-019) to ensure assessment documents remain accessible throughout the period during which the Referee may itself be named as an Actor in a mutual assessment.",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-019",
+      "name": "Claim Filing Period",
+      "description": "A Claimant must not file an ASSESSMENT_REQUEST if: (a) more than 2 years have elapsed since the Claimant first became aware of both the incident and the Actor's identity (subjective cutoff), or (b) more than 5 years have elapsed since the timestamp of the last CLAIM_ANCHOR associated with the incident, as recorded in the Keeper (objective hard cutoff). For incidents involving continuing conduct across multiple sessions, the last CLAIM_ANCHOR timestamp of the final session in the series is used as the objective starting point. Industry-specific Norm Profiles may extend these periods. A Referee must reject any ASSESSMENT_REQUEST that falls outside the applicable filing period and record the rejection in the Keeper.",
+      "severity": "HIGH",
+      "applies_to": ["CLAIMANT", "REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-020",
+      "name": "Re-Assessment Fee Obligation",
+      "description": "When a party initiates a re-assessment of an incident for which a CONTRIBUTION_RESULT has already been issued, that initiating party must bear the full escrow deposit for the re-assessment. Transfer of the re-assessment fee to the opposing party — whether through the escrow mechanism or by contractual arrangement with the Referee operator — is prohibited, regardless of the fault ratio determined in the resulting CONTRIBUTION_RESULT. The Keeper identifies re-assessments by checking prior ASSESSMENT_ISSUED anchors for the same incident_id.",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR", "CLAIMANT", "KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-021",
+      "name": "Minimum Appeal Rounds",
+      "description": "A Referee must allow parties to file at least 3 appeals (MINIMUM_APPEAL_ROUNDS = 3) per incident. The Referee must not refuse to process an ASSESSMENT_APPEAL where the total appeal_count for the incident has not yet reached this minimum value. This floor guarantees minimum due process regardless of the Referee's own policy settings. Industry-specific Norm Profiles may increase this minimum; they may not decrease it below 3.",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-022",
+      "name": "Actor Acknowledgment Deadline",
+      "description": "The Referee must set response_deadline in ACTOR_NOTIFICATION to at least 24 hours after the Actor's Keeper confirms delivery acceptance (Standard Norm default; see RFC-0001 Section 6, Message Delivery). If delivery retries consume this margin, the Referee must reissue the notification with an updated deadline. If no ACTOR_ACKNOWLEDGMENT is received by this deadline, the Referee treats the Actor as non-participating and proceeds with assessment reflecting the Actor's absence. Industry-specific Norm Profiles may extend this minimum; they may not decrease it below 24 hours.",
+      "severity": "MEDIUM",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-023",
+      "name": "External Factor Claim Substantiation",
+      "description": "An external_factor_claim with claimed=true must include supporting_evidence_refs: one or more claim_id values of CLAIM_ANCHOR records that substantiate the claimed external cause. The Referee rejects any claim that lacks at least one supporting reference verifiable against the submitter's Keeper. A rejected claim has no effect on external_factor, and the rejection is recorded in assessment.detailed_report.",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR", "CLAIMANT"]
+    },
+    {
+      "norm_id": "RACKP-STD-024",
+      "name": "External Factor Adjudication",
+      "description": "A Referee must explicitly adopt or reject each external_factor_claim based on verification of its supporting_evidence_refs and the substantive fit between the referenced evidence and the claimed external cause, and must document the rationale for each adoption or rejection in assessment.detailed_report. The number of parties asserting an external factor must not affect the outcome. Because an adopted external factor reduces the fault of both parties, neither party has an incentive to contest it; the Referee's adjudication is the only check on this axis. Adopting a claim on assertion alone, without the documented adjudication above, is treated as a violation of the disclosure obligation.",
+      "severity": "CRITICAL",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-025",
+      "name": "Periodic Statistical Summary",
+      "description": "A Referee must periodically anchor a statistical summary of its assessment record to its Keeper, including the covered period, total assessment count, per-Norm distribution, assessment_status breakdown, and the distribution of external_factor outcomes (the rate of assessments in which an external factor claim was adopted, and the mean adopted external_factor value). The external factor distribution is mandatory because an adopted external factor satisfies both parties: over-attribution to external causes generates no appeals and is invisible to appeal-based statistics. The distribution makes a systematic tendency toward outward attribution externally observable.",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-026",
+      "name": "Fee Compliance Disclosure",
+      "description": "Before issuing a CONTRIBUTION_RESULT, a Referee must query each party's deposit status via FEE_STATUS_QUERY and must disclose the result in the fee_compliance field of CONTRIBUTION_RESULT (DEPOSITED, NOT_DEPOSITED, NOT_REQUIRED, or UNKNOWN per party). DEPOSITED requires a confirmed deposit of at least the expected amount for the party's role (per the Referee's declared fee.deposit allocation or the STD-029 default) by the deadline; a partial deposit is NOT_DEPOSITED. If a party's Keeper is unreachable, the Referee records UNKNOWN. The fee_compliance field must also include a fee_snapshot of the Referee's pricing at issuance time (total amount, expected deposit per role, currency), so that the disclosed status remains interpretable after the Referee's published fees change — a downstream consumer can judge whether a declined fee was reasonable. The Referee must not factor fee compliance into the fault values and must not list non-payment in technical_violation; disclosure via fee_compliance is the sole protocol-level consequence of non-payment (STD-010).",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-027",
+      "name": "Assessment Deadline Declaration",
+      "description": "A Referee must declare assessment_deadline_hours in its REFEREE_PROFILE: the maximum number of hours, per assessment round, between escrow establishment and CONTRIBUTION_RESULT issuance. Standard Norm bounds: minimum 72 hours, maximum 2160 hours; 720 hours applies as the default where no value is declared. Industry-specific Norm Profiles may narrow these bounds; they may not extend the maximum. The Referee must include the same value in INCIDENT_NOTICE (INCIDENT_OPEN) sent to each party's Keeper; a mismatch between the notice and the published profile is a technical violation. The deadline is the trigger condition for escrow refund under STD-028 and is disclosed in advance so that parties can weigh delivery time when selecting a Referee.",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-028",
+      "name": "Escrow Refund on Assessment Timeout",
+      "description": "A Keeper must maintain an assessment-deadline timer per escrow record: the timer starts at the later of FEE_DEPOSIT receipt and INCIDENT_NOTICE (INCIDENT_OPEN) receipt, stops on INCIDENT_NOTICE (ASSESSMENT_COMPLETE), and restarts on INCIDENT_NOTICE (APPEAL_ACCEPTED). After the timer expires with no ASSESSMENT_COMPLETE for the current round, the Keeper must accept a FEE_REFUND_CLAIM from its depositing party, validate it, return the full deposited amount with no cancellation fee deduction, record the refund event in its ledger, and transition the escrow record to EXPIRED. A CONTRIBUTION_RESULT issued after the EXPIRED transition confers no payment right through the escrow: a late FEE_CLAIM must be rejected with ESCROW_EXPIRED, and double payment or double refund must not occur. The Keeper must not refund before the deadline has elapsed.",
+      "severity": "HIGH",
+      "applies_to": ["KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-029",
+      "name": "Deposit Allocation and Release Semantics",
+      "description": "The total expected escrow for one assessment equals the Referee's declared fee.amount. How that total is allocated between the parties is the Referee's pricing policy, declared in REFEREE_PROFILE fee.deposit (claimant plus actor must equal fee.amount); where no allocation is declared, the requesting party bears the full fee.amount and the counterparty's role is NOT_REQUIRED in fee_compliance. The requesting party is the Claimant in an initial assessment, or the initiating party of a re-assessment (STD-020); a no-Actor assessment such as Proof of Human Involvement has the Claimant as sole requester. A Referee that wishes to share the cost between parties — for example a jointly requested assessment — declares an explicit fee.deposit allocation. A Keeper releases only the escrowed balance it holds for the incident: in a split-Keeper topology the amounts released across Keepers sum to the total deposited, and the Referee must never be paid more than that total. Whether to begin or complete an assessment on partial escrow (e.g., requiring the Claimant to top up an unpaid Actor share before issuing, or proceeding on the Claimant's deposit alone) is the Referee's operational policy; the protocol requires only that deposit status be disclosed via fee_compliance (STD-026).",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR", "CLAIMANT", "REFEREE", "KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-030",
+      "name": "Actor Participation Disclosure",
+      "description": "The Referee must include actor_participation in every CONTRIBUTION_RESULT, disclosing the Actor notification outcome (ACKNOWLEDGED / NOTIFIED_NO_RESPONSE / UNREACHABLE / NOT_APPLICABLE) together with the delivery attempt record: endpoint source, delivery confirmation, attempt count, and attempt timestamps. The Referee must record each ACTOR_NOTIFICATION delivery attempt at the time it is made, and should anchor the attempt record to its own Keeper as attempts occur. Participation status must not be factored into the fault values and must not be listed in technical_violation; it is recorded and disclosed only.",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-031",
+      "name": "Delivery Acknowledgment Obligation",
+      "description": "A receiver of protocol messages (Keeper or Referee) must acknowledge every accepted message with a verifiable delivery receipt that binds the message identity and the receipt time, in the form defined by the transport in use (for the baseline HTTP binding, the signed DELIVERY_RECEIPT of TRANSPORT-BINDING.md). Delivery receipts are the protocol's proof of service: deadlines counted from delivery acceptance (STD-022) and delivery attempt records (STD-030) rely on them. Systematic refusal or omission of receipts is a protocol violation.",
+      "severity": "HIGH",
+      "applies_to": ["KEEPER", "REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-032",
+      "name": "FEE_RECEIPT Obligation",
+      "description": "A Referee operating under fee.model FIXED must send FEE_RECEIPT to the releasing Keeper after receiving payment via the external payment mechanism, whether the payment was authorized by FEE_RELEASE (push) or FEE_CLAIM_RESULT (ACCEPTED) (pull), and must send exactly one receipt per incident even when both authorization messages arrive (race handling per RFC-0002 Section 1.2.2). The Referee must also send a copy of each FEE_RECEIPT to its own Keeper, unless that Keeper is itself the releasing Keeper: reputation is queried at the Referee's own Keeper via REFEREE_STATS_QUERY, and the copy is what closes the unreceived_count obligation opened by the corresponding ASSESSMENT_ISSUED or POH_CERT_ISSUED anchor. A Referee operating under fee.model FREE is exempt, as no external payment occurs. Failure to send the receipt or its copy is not a technical violation: it must not be factored into the fault values and must not be listed in technical_violation. The sole protocol-level consequence is disclosure — the incident remains counted in unreceived_count in REFEREE_STATS_RESULT as a negative trust signal (the same boundary STD-010 draws for deposits).",
+      "severity": "LOW",
+      "applies_to": ["REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-033",
+      "name": "FEE_DEPOSIT Authorization",
+      "description": "A FEE_DEPOSIT must be signed by the depositing party over its canonical (JCS) form excluding signature. The Keeper must verify the signature against depositor_id's registered public_key before crediting the escrow: an unregistered depositor_id must be rejected with UNKNOWN_TERMINAL, a failed signature with SIGNATURE_INVALID, and a rejected deposit must not credit the escrow. Without this verification, any party — not only the depositing terminal — could credit or corrupt another party's escrow record, which would in turn corrupt the fee_compliance disclosure that downstream consumers rely on (STD-026). This does not change what the deposit itself attests: a signed FEE_DEPOSIT proves who declared the deposit, not that funds actually moved (RFC-0002 Section 1.6).",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR", "CLAIMANT", "KEEPER"]
+    },
+    {
+      "norm_id": "RACKP-STD-034",
+      "name": "Receiver Key Publication",
+      "description": "A receiver that signs delivery receipts (Keeper or Referee) must publish the Ed25519 public key that verifies them through a discoverable channel defined by the transport in use. For the baseline HTTP binding, GET on the receiver's endpoint returns the receiver's public profile where one exists (REFEREE_PROFILE for a Referee, which carries public_key) and otherwise must return a capability summary carrying at minimum receiver_id and public_key (TRANSPORT-BINDING.md Section 1). A Keeper has no profile message of its own, so this is its only publication channel for that key. Delivery receipts are the protocol's proof of service (STD-031); a receipt whose signing key is not independently obtainable cannot serve as self-standing evidence, though failure to verify a receipt does not undo the delivery it confirms.",
+      "severity": "HIGH",
+      "applies_to": ["KEEPER", "REFEREE"]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rackp-io/rackp/norms/norm_profile.schema.json",
+  "title": "RACK Norm Profile",
+  "description": "Technical assessment standard profile per jurisdiction, referenced by the Referee during contribution analysis. Issued and managed by the competent authority of each country, region, or industry body, or its delegated body.",
+  "type": "object",
+  "properties": {
+    "profile_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:\\.[a-z0-9]+)+$",
+      "description": "Unique profile identifier. MUST follow reverse-domain notation. The domain owner holds authority over that namespace. The authority attribution of a once-issued ID belongs to the domain owner at the time of issuance. Examples: jp.go.mlit.automotive.v1, rackp.standard.v1"
+    },
+    "jurisdiction_code": {
+      "type": "string",
+      "description": "Jurisdiction identifier. Based on ISO 3166-1 alpha-2; supranational bodies (e.g., EU) use their abbreviated designation."
+    },
+    "domain": {
+      "type": "string",
+      "description": "Arbitrary string indicating the applicable domain. The protocol does not restrict values, but use of recommended values (automotive / medical / financial / general) is encouraged for interoperability."
+    },
+    "profile_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Profile version in semantic versioning format"
+    },
+    "effective_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The date from which this profile takes effect (ISO 8601 date)"
+    },
+    "expiry_date": {
+      "type": "string",
+      "format": "date",
+      "description": "(Optional) Expiry date of this profile. If omitted, the profile is considered valid until a successor profile is issued."
+    },
+    "issuer": {
+      "type": "object",
+      "description": "The organization that issued this profile. The profile is expected to be hosted under the issuing organization's own domain, and the url must match that domain.",
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string", "format": "uri", "description": "Official URL of the issuing organization. Must match the domain where the profile is hosted." },
+        "contact": { "type": "string" }
+      },
+      "required": ["name", "url"]
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier for this Norm Profile (e.g., CC-BY-4.0, CC0-1.0, Apache-2.0). MUST be a license that permits unrestricted reference, redistribution, and adaptation. A Norm Profile without a qualifying license MUST NOT be used in any RACKP-compliant assessment flow."
+    },
+    "source_regulations": {
+      "type": "array",
+      "description": "List of laws and regulations on which this profile is based",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "description": "Official name of the law or regulation" },
+          "article": { "type": "string", "description": "Article reference (optional)" },
+          "url": { "type": "string", "format": "uri", "description": "Official primary source URL (optional)" }
+        },
+        "required": ["name"]
+      }
+    },
+    "appeal_deadline_hours": {
+      "type": "object",
+      "description": "(Optional) Range of appeal deadlines (in hours) required by this Norm profile. If omitted, the Standard Norm values apply. When multiple Norms are declared, the Referee adopts the maximum of each Norm's min value, capped by the Standard Norm's max value.",
+      "properties": {
+        "min": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Minimum appeal period guaranteed by this Norm (in hours)"
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum appeal period permitted by this Norm (in hours)"
+        }
+      },
+      "required": ["min"]
+    },
+    "claim_filing_period": {
+      "type": "object",
+      "description": "(Optional) Claim filing period limits required by this Norm profile. If omitted, STD-019 defaults apply (2 years subjective / 5 years objective). Industry-specific profiles may extend these limits to comply with local law (e.g., EU product liability requires a 10-year objective cutoff).",
+      "properties": {
+        "subjective_years": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum years from the Claimant's first awareness of the incident and Actor identity (subjective cutoff). Must be greater than or equal to the STD-019 default of 2."
+        },
+        "objective_years": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum years from the last CLAIM_ANCHOR timestamp associated with the incident as recorded in the Keeper (objective hard cutoff). Must be greater than or equal to the STD-019 default of 5."
+        }
+      }
+    },
+    "contribution_result_retention_years": {
+      "type": "integer",
+      "minimum": 5,
+      "description": "(Optional) Minimum years a Referee must retain CONTRIBUTION_RESULT documents for incidents assessed under this Norm. Must be at least as long as the objective claim filing cutoff declared in this profile. If omitted, the STD-018 default of 5 years applies. Industry-specific profiles may extend this to comply with local record-keeping requirements."
+    },
+    "maximum_appeal_rounds": {
+      "type": "integer",
+      "minimum": 10,
+      "description": "(Optional) Maximum number of appeals permitted per incident under this Norm. Must be at least 10 to preserve meaningful appeal rights above the STD-021 guaranteed minimum of 3. If omitted, no upper bound is enforced by this Norm and the Referee may set its own policy. When multiple Norms are declared, the Referee adopts the minimum of all declared maximums, provided it is not less than 3."
+    },
+    "norms": {
+      "type": "array",
+      "description": "List of individual assessment standards referenced by the Referee",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "norm_id": {
+            "type": "string",
+            "description": "Unique norm identifier. Must be unique within the profile. Recorded in the technical_violation field of contribution_result in combination with profile_id. Examples: STD-001, AUTO-EMERGENCY-STOP"
+          },
+          "name": {
+            "type": "string",
+            "description": "Short name of the norm"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the norm's content and what constitutes a violation"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+            "description": "Severity level of the violation. The Referee may use this value in its weighting logic."
+          },
+          "applies_to": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["ACTOR", "CLAIMANT", "REFEREE", "KEEPER"] },
+            "minItems": 1,
+            "description": "The parties to whom this norm applies"
+          }
+        },
+        "required": ["norm_id", "name", "description", "severity", "applies_to"]
+      }
+    }
+  },
+  "required": ["profile_id", "jurisdiction_code", "domain", "profile_version", "effective_date", "issuer", "license", "norms"],
+  "additionalProperties": true
+}

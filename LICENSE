@@ -1,0 +1,127 @@
+RACK Protocol (RACKP) — Source-Available License
+Copyright (c) 2026 RACKP Project. All rights reserved.
+
+Patent pending.
+
+---
+
+ACCEPTANCE
+
+By implementing, deploying, or operating any component of this Protocol
+(including Referee (R), Keeper (K), Actor (A), or Claimant (C) nodes),
+you agree to the terms of this license. If you do not agree, you may not
+use the Protocol for those purposes.
+
+---
+
+GRANT OF RIGHTS
+
+Permission is granted, free of charge, to any person obtaining a copy of
+this specification and associated materials (the "Protocol"), to:
+
+  - read, study, and evaluate the Protocol for any purpose;
+  - implement the Protocol for academic, research, or non-commercial use;
+  - build and operate open-source or commercial implementations of the
+    Protocol, subject to the license fee terms below.
+
+---
+
+LICENSE FEE
+
+All use of the Protocol under versions prior to v1.0.0 (including all alpha
+and beta releases) is free of charge. No license fee applies and no
+reporting or registration is required during this period.
+
+Upon the release of v1.0.0, the following terms apply:
+
+The first 100 billable artifacts (CONTRIBUTION_RESULTs and
+POH_CERTIFICATEs combined) issued by an operator are free of
+charge, counted in aggregate across all Referee nodes operated by the
+same person or organization. No reporting or registration is required
+below this threshold.
+
+This threshold is bound to the operator, not to the Referee node
+identifier. Issuing a new referee_id does not reset the count.
+
+Once an operator has issued 100 or more billable artifacts
+(CONTRIBUTION_RESULTs and POH_CERTIFICATEs combined) in total
+across all of its Referee nodes, the following terms apply:
+
+  - A license fee of USD 1.00 per CONTRIBUTION_RESULT and USD 1.00 per
+    POH_CERTIFICATE applies to all such artifacts from the 101st onward,
+    regardless of whether a FEE_DEPOSIT was recorded for that artifact.
+  - The operator_contact field MUST be populated with accurate contact
+    information in the REFEREE_PROFILE of every Referee node the
+    operator runs.
+  - Operators who wish to continue operating beyond 100 assessments without
+    a license fee (e.g., academic research, registered non-profit use) must
+    submit an exemption request to RACKP before exceeding the threshold.
+    Exemptions are granted at RACKP's discretion.
+
+License accounting is based on operator self-reporting. ASSESSMENT_ISSUED
+and POH_CERT_ISSUED anchors recorded in Keepers provide an independently
+auditable record against which self-reported counts are reconciled:
+anchored artifacts establish a verifiable lower bound, so a self-report
+falling short of the publicly anchored record is evidence of
+under-reporting. The obligation to report accurately binds the operator
+regardless of what is externally observable.
+
+Fee schedules may be revised independently of the Protocol specification.
+The current fee schedule is maintained at:
+  https://github.com/rackp-io/rackp
+
+To inquire about licensing or exemptions:
+  https://github.com/rackp-io/rackp/issues
+
+Report submissions contain operator business information and are not
+accepted through the public issue tracker. A dedicated reporting
+channel is being finalized and will be announced in this repository
+no later than the release of v1.0.0.
+
+RACKP may publish the Referee ID, endpoint, and issued-artifact count of
+operators who have exceeded the 100-artifact threshold and have not
+registered an operator_contact or responded to payment inquiries within
+30 days of notification.
+
+Anchoring (CLAIM_ANCHOR records sent to a Keeper) carries no license fee.
+Keeper node operation carries no license fee payable to RACKP. Keeper
+operators may charge their own fees to Actors, Claimants, and Referees
+for their services under separate commercial arrangements.
+Referee operators may likewise charge their own fees to Actors and
+Claimants for assessment services, independent of the per-artifact
+license fee payable to RACKP.
+
+---
+
+PRIVATE AND OFFLINE USE
+
+Deployments not accessible to parties outside the operator's own
+organization — including on-premises, VPN, and air-gapped environments —
+are exempt from the per-artifact license fee, regardless of
+issued-artifact count.
+
+Operators requiring formal licensing certification for enterprise or
+procurement purposes may contact RACKP with their Referee's terminal_id:
+  https://github.com/rackp-io/rackp/issues
+
+---
+
+RESTRICTIONS
+
+You may not:
+
+  - remove or alter this license notice or any copyright notices;
+  - represent that an implementation is certified or endorsed by RACKP
+    without written permission;
+  - use the name "RACKP", "RACK Protocol", or associated marks to imply
+    endorsement without written permission.
+
+---
+
+DISCLAIMER
+
+THE PROTOCOL IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. THE AUTHORS SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY ARISING FROM USE OF THE PROTOCOL. CONTRIBUTION RESULTS PRODUCED
+UNDER THIS PROTOCOL ARE NOT LEGAL JUDGMENTS. FINAL LEGAL DETERMINATION
+REMAINS THE RESPONSIBILITY OF THE APPLICABLE JUDICIAL AUTHORITY.

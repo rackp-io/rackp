@@ -1,0 +1,6 @@
+sim/**/__pycache__/
+.claude/
+# sim virtual environment (recreate from sim/requirements.txt)
+.venv/
+# check_refs human-review output (regenerated each run)
+sim/tools/ref_review.txt
