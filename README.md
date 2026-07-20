@@ -12,6 +12,31 @@
 
 ---
 
+## Contents
+
+- [Background: What "Responsibility" Actually Means](#-background-what-responsibility-actually-means)
+- [The 4 Roles (RACK)](#-the-4-roles-rack)
+- [Design Philosophy](#-design-philosophy)
+- [Architecture](#-architecture)
+- [Key Features](#-key-features)
+- [Social Impact](#-social-impact)
+- [Reference Implementations](#-reference-implementations)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [Disclaimer](#-disclaimer)
+
+**Links**
+
+- [RFC-0001](docs/RFC-0001.md) — core semantics: components, protocol flow, Fault Contribution / PoHI
+- [RFC-0002](docs/RFC-0002.md) — operational parameters: payment, security, known risks
+- [Sequence](docs/SEQUENCE.md) — end-to-end message flow between roles, as a diagram
+- [Transport Binding](docs/TRANSPORT-BINDING.md) — how RFC-0001 messages map onto HTTP
+- [FAQ](FAQ.md) — problem, protocol, design decisions, use cases, funding
+- [Contributing](CONTRIBUTING.md) — where to start depending on what you want to do
+- [License](LICENSE) — source-available, patent pending
+
+---
+
 ## 🚀 Background: What "Responsibility" Actually Means
 
 "Responsibility" in English maps to only one slice of what Japanese speakers mean by 責任 (*sekinin*) — a word that simultaneously encompasses what English splits across five distinct concepts, each addressed by separate industries and solutions:
