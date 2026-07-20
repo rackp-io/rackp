@@ -91,11 +91,9 @@ RACKP does not require Referees to "be neutral." "Build a neutral AI" is an unac
 
 ### Norms exist outside the protocol
 
-RACKP does not ask Referees "what is correct." The definition of correctness belongs to whoever holds domain expertise — developers, industry bodies, standards organizations, national judiciaries, or any combination thereof. What RACKP provides is **the structure for injecting externally agreed-upon norms and applying them**.
+RACKP does not ask Referees "what is correct." The definition of correctness belongs to whoever holds domain expertise — developers, industry bodies, standards organizations, national judiciaries, or any combination thereof. What RACKP provides is **the structure for injecting externally agreed-upon norms and applying them** — never a substitute for the norm itself.
 
-Actors and Claimants declare the Norm they will apply at the start of each session. The Norm used by the Referee is based on the declarations of the parties — not an arbitrary choice by the Referee. The situation of "being judged by a Norm you never agreed to" is excluded by design.
-
-The Referee is required to record and disclose which norm was selected and applied. The correctness of the norm itself is not RACKP's concern; it is delegated to the authority that defined it. This allows RACKP to function as **infrastructure that operates universally across multiple domains with differing norm systems**, independent of any particular culture, industry, or jurisdiction.
+The correctness of a norm is not RACKP's concern; it is delegated to the authority that defined it. This is what lets RACKP function as **infrastructure that operates universally across multiple domains with differing norm systems**, independent of any particular culture, industry, or jurisdiction. For how a norm is declared and applied, see [External Norm Injection](#-key-features) below.
 
 ### Silence is not a right AI can hold
 
@@ -131,7 +129,7 @@ RACKP assumes a decentralized architecture for both Referee and Keeper, with nei
 
 **Referee decentralization and mutual assessment:**
 * Assessment does not rely on a single Referee controlled by any particular organization or company. Multiple Referees independently verify evidence and conduct assessment.
-* If a Referee's assessment or conduct is found to be improper, that Referee can itself be named as an Actor and subject to a claim filed before another Referee. Assessors cannot grant themselves immunity.
+* This multiplicity is what makes the role fluidity above enforceable in practice: an improper Referee has independent peers able to hear a claim against it, rather than being the only authority available.
 
 This dual decentralized structure allows RACKP to sidestep the centralized question of "who controls the system" at the design level. Conformance to the protocol itself becomes the basis of trust.
 
@@ -159,16 +157,10 @@ Using the anchored evidence, the Referee computes two distinct outputs:
 The certificate functions as a **deepfake deterrent**: it does not detect synthetic media, but it structurally raises the cost of passing synthetic content off as human-made — a forger must stage a convincing creation process in advance, in real time, across every anchored modality — and it makes human-origin claims auditable and falsifiable rather than merely asserted. It likewise enables AI training pipelines to preferentially select process-certified human-derived data, mitigating model collapse.
 
 ### 3. Referee Self-Accountability
-The Referee holds no immunity. If a Referee's assessment or conduct is found improper, that Referee can itself be named as Actor in a separate incident and assessed by another Referee. This mutual assessment structure applies uniformly — no role in RACKP stands outside the protocol.
-
-All Referee actions are anchored to the Keeper continuously. A Referee's complete assessment history is publicly verifiable, and behavioral patterns that diverge from stated reasoning are identifiable through the accumulated record. Trust is formed not through prior certification but through this accumulation.
+No role stands outside the protocol — a Referee whose assessment or conduct is found improper can itself be named Actor in a separate incident ([mutual assessment](#-architecture)). What makes that enforceable in practice: all Referee actions are anchored to the Keeper continuously, a Referee's complete assessment history is publicly verifiable, and behavioral patterns that diverge from stated reasoning are identifiable through the accumulated record. Trust is formed not through prior certification but through this accumulation.
 
 ### 4. External Norm Injection
-RACKP does not define what "correct" behavior is. That definition belongs to whoever holds domain expertise — developers, industry bodies, standards organizations, national judiciaries, or any combination thereof. What RACKP provides is **the structure for injecting externally agreed-upon norms and applying them consistently**.
-
-Actor and Claimant declare the Norm they will apply at the start of each session. The Referee applies the declared Norm — not an arbitrary choice of its own. Being judged by a Norm one never agreed to is excluded by design.
-
-The Referee is required to record and disclose which Norm was selected and applied. This allows RACKP to function as infrastructure that operates across multiple domains with differing norm systems, independent of any particular culture, industry, or jurisdiction.
+Actor and Claimant declare the Norm they will apply at the start of each session ([why norms live outside the protocol](#-design-philosophy)). The Referee applies the declared Norm — never an arbitrary choice of its own — and is required to record and disclose which Norm was selected and applied. Being judged by a Norm one never agreed to is excluded by design.
 
 ---
 
