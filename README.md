@@ -93,7 +93,7 @@ RACKP does not require Referees to "be neutral." "Build a neutral AI" is an unac
 
 RACKP does not ask Referees "what is correct." The definition of correctness belongs to whoever holds domain expertise — developers, industry bodies, standards organizations, national judiciaries, or any combination thereof. What RACKP provides is **the structure for injecting externally agreed-upon norms and applying them** — never a substitute for the norm itself.
 
-The correctness of a norm is not RACKP's concern; it is delegated to the authority that defined it. This is what lets RACKP function as **infrastructure that operates universally across multiple domains with differing norm systems**, independent of any particular culture, industry, or jurisdiction. For how a norm is declared and applied, see [External Norm Injection](#-key-features) below.
+The correctness of a norm is not RACKP's concern; it is delegated to the authority that defined it. This is what lets RACKP function as **infrastructure that operates universally across multiple domains with differing norm systems**, independent of any particular culture, industry, or jurisdiction.
 
 ### Silence is not a right AI can hold
 
@@ -157,10 +157,10 @@ Using the anchored evidence, the Referee computes two distinct outputs:
 The certificate functions as a **deepfake deterrent**: it does not detect synthetic media, but it structurally raises the cost of passing synthetic content off as human-made — a forger must stage a convincing creation process in advance, in real time, across every anchored modality — and it makes human-origin claims auditable and falsifiable rather than merely asserted. It likewise enables AI training pipelines to preferentially select process-certified human-derived data, mitigating model collapse.
 
 ### 3. Referee Self-Accountability
-No role stands outside the protocol — a Referee whose assessment or conduct is found improper can itself be named Actor in a separate incident ([mutual assessment](#-architecture)). What makes that enforceable in practice: all Referee actions are anchored to the Keeper continuously, a Referee's complete assessment history is publicly verifiable, and behavioral patterns that diverge from stated reasoning are identifiable through the accumulated record. Trust is formed not through prior certification but through this accumulation.
+No role stands outside the protocol — a Referee whose assessment or conduct is found improper can itself be named Actor in a separate incident. What makes that enforceable in practice: all Referee actions are anchored to the Keeper continuously, a Referee's complete assessment history is publicly verifiable, and behavioral patterns that diverge from stated reasoning are identifiable through the accumulated record. Trust is formed not through prior certification but through this accumulation.
 
 ### 4. External Norm Injection
-Actor and Claimant declare the Norm they will apply at the start of each session ([why norms live outside the protocol](#-design-philosophy)). The Referee applies the declared Norm — never an arbitrary choice of its own — and is required to record and disclose which Norm was selected and applied. Being judged by a Norm one never agreed to is excluded by design.
+Actor and Claimant declare the Norm they will apply at the start of each session. The Referee applies the declared Norm — never an arbitrary choice of its own — and is required to record and disclose which Norm was selected and applied. Being judged by a Norm one never agreed to is excluded by design.
 
 ---
 
