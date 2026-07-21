@@ -390,6 +390,27 @@ a careful reader never has to rely on the fault values alone.
 
 ---
 
+**Q: How is fault set when neither party is found at fault? Can both parties' fault be lowered and the rest recorded as an "external factor" instead?**
+
+An `external_factor_claim` is meant to work like this: a party submits it, backs it with verifiable evidence, and the Referee adopts or rejects it (STD-023, STD-024).
+
+STD-035 draws a firm line here: a non-zero `external_factor` can exist
+only if an `external_factor_claim` has been adopted. A Referee may still
+use its own judgment to adjust the split between `actor_fault` and
+`claimant_fault`, but it cannot manufacture blame toward an unclaimed
+third party out of nowhere. When no claim is adopted, the result falls
+back to the ordinary reference baseline.
+
+That baseline itself, however, does not decide who should bear a residual
+that couldn't be assigned to anyone. It is only a neutral signal that no
+norm-based difference was found — the actual disposition varies by
+jurisdiction and industry. When authoring or applying a Norm, make sure
+to explicitly confirm and set how that no-fault residual should be
+attributed, in line with the applicable industry standard, insurance
+framework, or legal regime.
+
+---
+
 ## On use cases
 
 **Q: Who is RACKP for?**
