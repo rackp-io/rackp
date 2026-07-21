@@ -260,6 +260,13 @@
       "description": "A receiver that signs delivery receipts (Keeper or Referee) must publish the Ed25519 public key that verifies them through a discoverable channel defined by the transport in use. For the baseline HTTP binding, GET on the receiver's endpoint returns the receiver's public profile where one exists (REFEREE_PROFILE for a Referee, which carries public_key) and otherwise must return a capability summary carrying at minimum receiver_id and public_key (TRANSPORT-BINDING.md Section 1). A Keeper has no profile message of its own, so this is its only publication channel for that key. Delivery receipts are the protocol's proof of service (STD-031); a receipt whose signing key is not independently obtainable cannot serve as self-standing evidence, though failure to verify a receipt does not undo the delivery it confirms.",
       "severity": "HIGH",
       "applies_to": ["KEEPER", "REFEREE"]
+    },
+    {
+      "norm_id": "RACKP-STD-035",
+      "name": "External Factor Exclusivity",
+      "description": "A non-zero external_factor must originate only from at least one external_factor_claim adopted through the claim-adjudication process (STD-023, STD-024). The general allowance for Referees to extend the reference fault logic with documented contextual causal analysis may reweight actor_fault relative to claimant_fault, but must not itself be used to manufacture a non-zero external_factor in the absence of an adopted claim. Absent an adopted claim, the outcome falls back to the applicable reference baseline (e.g. 0.5 / 0.5 / 0.0 when both parties verify), which is an intentionally neutral non-signal — it does not by itself determine who bears an unattributed residual, a question the protocol leaves to the applicable Norm Profile, judiciary, or insurance layer.",
+      "severity": "HIGH",
+      "applies_to": ["REFEREE"]
     }
   ]
 }
