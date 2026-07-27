@@ -17,7 +17,7 @@ class Keeper(Agent):
         # incident_id -> {deposits: {id: amount}, currency, released: bool,
         #   state: ESCROWED|RELEASED|SETTLED|WITHDRAWN|EXPIRED (STD-028 lifecycle),
         #   deadline: datetime|None (STD-028 assessment-deadline timer),
-        #   refunded: {depositor_id: amount}, reassessment_initiator: str|None}
+        #   refunded: {depositor_id: amount}}
         self._escrow = {}
         self._prior_verdicts = {}  # incident_id -> [cert_id, ...]
         self._profiles = {}  # referee_id -> REFEREE_PROFILE dict
@@ -102,7 +102,10 @@ class Keeper(Agent):
     def _handle_fee_deposit(self, msg):
         """RFC §6.4 — receives FEE_DEPOSIT, records into escrow; schema: schemas/fee_deposit.json.
         STD-033: verified against depositor_id's registered public key before crediting
-        escrow — without this, any sender could forge another party's deposit record."""
+        escrow — without this, any sender could forge another party's deposit record.
+        STD-020: a re-assessment is always a NEW incident under a NEW incident_id, so no
+        same-incident re-assessment detection happens here; a deposit arriving for an
+        incident that already has a verdict belongs to the same Referee's appeal rounds."""
         depositor_id = msg["depositor_id"]
         if not self._can_verify(depositor_id):
             self._reject_unverifiable(msg)
@@ -110,8 +113,6 @@ class Keeper(Agent):
         incident_id  = msg["incident_id"]
         amount       = msg["amount"]
         currency     = msg.get("currency", "USD")
-        prior = self._prior_verdicts.get(incident_id, [])
-        is_reassessment = len(prior) > 0
         if incident_id not in self._escrow:
             self._escrow[incident_id] = {
                 "deposits": {},
@@ -119,31 +120,19 @@ class Keeper(Agent):
                 "released": False,
                 "state": "ESCROWED",
                 "deadline": None,
-                "refunded": {},
-                "reassessment_initiator": depositor_id if is_reassessment else None
+                "refunded": {}
             }
         elif not self._escrow[incident_id]["deposits"]:
             # Entry pre-created by INCIDENT_NOTICE (INCIDENT_OPEN or a prior round's
             # ASSESSMENT_COMPLETE) with no deposits yet: this is the round's first
-            # deposit, so it fixes the escrow currency and — after a prior verdict —
-            # identifies the re-assessment initiating party (STD-020).
+            # deposit, so it fixes the escrow currency.
             self._escrow[incident_id]["currency"] = currency
-            if is_reassessment and self._escrow[incident_id].get("reassessment_initiator") is None:
-                self._escrow[incident_id]["reassessment_initiator"] = depositor_id
         self._escrow[incident_id]["deposits"][depositor_id] = amount
         # STD-028: the assessment-deadline timer starts at the later of FEE_DEPOSIT
         # and INCIDENT_NOTICE(INCIDENT_OPEN). Refreshing on each event yields "later of".
         self._start_assessment_timer(self._escrow[incident_id])
-        if is_reassessment:
-            initiator = self._escrow[incident_id]["reassessment_initiator"]
-            print(f"[{self.name}] escrow deposit (RE-ASSESSMENT STD-020): {depositor_id}"
-                  f"  incident={incident_id}  amount={amount} {currency}")
-            if depositor_id == initiator:
-                print(f"[{self.name}]   STD-020: {depositor_id} is the initiating party"
-                      f" - full cost applies, transfer to opposing party PROHIBITED")
-        else:
-            print(f"[{self.name}] escrow deposit: {depositor_id}  incident={incident_id}"
-                  f"  amount={amount} {currency}")
+        print(f"[{self.name}] escrow deposit: {depositor_id}  incident={incident_id}"
+              f"  amount={amount} {currency}")
 
     def release_fee(self, incident_id):
         """RFC §6.15 — explicit FEE_RELEASE trigger called after INCIDENT_NOTICE(ASSESSMENT_COMPLETE); schema: schemas/fee_release.json"""
@@ -346,8 +335,23 @@ class Keeper(Agent):
         }
         if prior:
             result["prior_verdict_refs"] = list(prior)
+        # STD-020: a re-assessment is a new incident that declares the original via
+        # prior_incident_ids. Each declared prior incident is verified against the
+        # verdicts this Keeper has seen — ASSESSMENT_ISSUED anchors at the Referee's own
+        # Keeper, INCIDENT_NOTICE(ASSESSMENT_COMPLETE) records at a party Keeper (§6.6).
+        if msg.get("prior_incident_ids"):
+            verified = []
+            for pid in msg["prior_incident_ids"]:
+                refs = self._prior_verdicts.get(pid, [])
+                entry_v = {"incident_id": pid, "verified": bool(refs)}
+                if refs:
+                    entry_v["cert_id"] = refs[-1]
+                verified.append(entry_v)
+            result["verified_prior_incidents"] = verified
         print(f"[{self.name}] fee status: {terminal_id[:8]}...  incident={incident_id}"
-              f"  deposited={deposited}  prior_count={len(prior)}")
+              f"  deposited={deposited}  prior_count={len(prior)}"
+              + (f"  verified_prior_incidents={[(v['incident_id'][:8], v['verified']) for v in result['verified_prior_incidents']]}"
+                 if "verified_prior_incidents" in result else ""))
         self.world.send(self.name, msg["_sender"], result)
 
     def _handle_fee_receipt(self, msg):
@@ -631,8 +635,7 @@ class Keeper(Agent):
             # FEE_REFUND_CLAIM requires a deposit.
             entry = self._escrow.setdefault(incident_id, {
                 "deposits": {}, "currency": "USD", "released": False,
-                "state": "ESCROWED", "deadline": None, "refunded": {},
-                "reassessment_initiator": None
+                "state": "ESCROWED", "deadline": None, "refunded": {}
             })
             if "assessment_deadline_hours" in msg:
                 entry["deadline_hours"] = msg["assessment_deadline_hours"]
@@ -648,8 +651,7 @@ class Keeper(Agent):
             if referee_agent:
                 entry = self._escrow.setdefault(incident_id, {
                     "deposits": {}, "currency": "USD", "released": False,
-                    "state": "ESCROWED", "deadline": None, "refunded": {},
-                    "reassessment_initiator": None
+                    "state": "ESCROWED", "deadline": None, "refunded": {}
                 })
                 entry["_referee_tid"] = referee_agent.terminal_id
                 # STD-028: ASSESSMENT_COMPLETE stops the timer (assessment finished in time).

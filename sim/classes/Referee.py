@@ -92,15 +92,21 @@ class Referee(Agent):
         parties = inc.get("parties", [])
         keeper_map = inc.get("keeper_map", {})
         now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        prior_inc_ids = inc.get("prior_incident_ids", [])
         for terminal_id in parties:
             kn = keeper_map.get(terminal_id, self._keeper_name)
-            self.world.send(self.name, kn, {
+            query = {
                 "type": "FEE_STATUS_QUERY",
                 "incident_id": incident_id,
                 "referee_id": self.terminal_id,
                 "terminal_id": terminal_id,
                 "timestamp": now
-            })
+            }
+            # STD-020: declared prior incidents ride in the query so the Keeper can
+            # verify the linkage and answer with verified_prior_incidents (§6.5/§6.6).
+            if prior_inc_ids:
+                query["prior_incident_ids"] = prior_inc_ids
+            self.world.send(self.name, kn, query)
 
     def issue_contribution_result(self, incident_id):
         """RFC §6.14 — computes fault and issues CONTRIBUTION_RESULT; also self-anchors ASSESSMENT_ISSUED; schema: schemas/contribution_result.json"""
@@ -178,6 +184,11 @@ class Referee(Agent):
         inc = self._incidents.setdefault(incident_id, {"parties": [], "results": {}})
         inc["claimant_id"] = claimant_id
         inc["actor_id"]    = actor_id
+        # STD-020: a re-assessment arrives as a NEW incident declaring the original via
+        # prior_incident_ids (§6.2). Keep the declared ids for FEE_STATUS_QUERY
+        # verification and for related_incident_ids disclosure in the result (§6.14).
+        if msg.get("prior_incident_ids"):
+            inc.setdefault("prior_incident_ids", []).extend(msg["prior_incident_ids"])
         # Learn the Claimant's Keeper now, so escrow settlement/notices can route even
         # before any evidence is submitted (e.g. a withdrawal before Phase 3).
         inc.setdefault("keeper_map", {})[claimant_id] = keeper_name
@@ -288,6 +299,9 @@ class Referee(Agent):
             entry["prior_assessment_count"] = msg.get("prior_assessment_count", 0)
             if msg.get("prior_verdict_refs"):
                 entry["prior_verdict_refs"] = msg["prior_verdict_refs"]
+            # STD-020: the Keeper's verification of declared prior incidents (§6.6).
+            if msg.get("verified_prior_incidents"):
+                entry["verified_prior_incidents"] = msg["verified_prior_incidents"]
         elif msg["type"] == "FEE_RELEASE":
             self._handle_fee_release(msg)
         elif msg["type"] == "FEE_CLAIM_RESULT":
@@ -654,6 +668,11 @@ class Referee(Agent):
             "additional_appeal_limit_datetime": appeal_deadline,
             "prior_assessment_count": fee_status.get("prior_assessment_count", 0),
             "prior_verdict_refs": fee_status.get("prior_verdict_refs", []) or [],
+            # STD-020: disclose the declared re-assessment linkage. related_incident_ids
+            # is a loose informational pointer (RFC-0001 §2.5); the Keeper-verified
+            # linkage lives in verified_prior_incidents (§6.6), printed below.
+            **({"related_incident_ids": list(inc.get("prior_incident_ids", []))}
+               if inc.get("prior_incident_ids") else {}),
             "timestamp": now.strftime("%Y-%m-%dT%H:%M:%SZ")
         }
 
@@ -661,9 +680,13 @@ class Referee(Agent):
         prior_inc_ids = inc.get("prior_incident_ids", [])
         print(f"\n[R] === CONTRIBUTION_RESULT: {incident_id} ===")
         if prior_inc_ids:
-            print(f"[R]   prior_incident_ids: {prior_inc_ids}")
+            verified = fee_status.get("verified_prior_incidents", [])
+            print(f"[R]   re-assessment of prior incident(s) (STD-020): {prior_inc_ids}"
+                  f"  keeper_verified={[(v['incident_id'][:8], v['verified']) for v in verified]}")
         if prior_count > 0:
-            print(f"[R]   RE-ASSESSMENT (STD-020): prior_count={prior_count}"
+            # Same-incident prior results are this Referee's own appeal-round revisions
+            # (§6.14) — a re-assessment by a different Referee is a separate incident.
+            print(f"[R]   appeal-round revision: prior_count={prior_count}"
                   f"  refs={result['prior_verdict_refs']}")
         print(f"[R]   findings : {result['assessment']['factual_findings']}")
         print(f"[R]   actor_fault={actor_fault}  claimant_fault={claimant_fault}"
