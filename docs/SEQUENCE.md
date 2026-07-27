@@ -222,7 +222,7 @@ sequenceDiagram
     Note over Kc: FEE_RELEASE timer runs — escrow settles per the standard flow
 
     Note over A: Later — the Actor learns of the assessment (appeal window may have lapsed)
-    A->>R2: Counter-assessment of the same incident (STD-020 — the initiating Actor bears the full deposit)
+    A->>R2: Counter-assessment as a new incident under a new incident_id (STD-020 — the initiating Actor files as Claimant, bears the full deposit, and references the original via prior_incident_ids)
     Note over C, Ka: Both results persist in the Keeper record. The ex parte label and the notification record let downstream consumers weigh each result.
 ```
 

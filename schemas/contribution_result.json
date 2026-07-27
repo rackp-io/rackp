@@ -263,7 +263,7 @@
     "prior_assessment_count": {
       "type": "integer",
       "minimum": 0,
-      "description": "Number of CONTRIBUTION_RESULTs previously issued for this incident_id by any Referee, as recorded in the Keeper (ASSESSMENT_ISSUED anchors). 0 for a first assessment. The Referee MUST retrieve this value from the Keeper before issuing the result (STD-020)."
+      "description": "Number of CONTRIBUTION_RESULTs previously issued for this incident_id, as recorded in the Keeper (ASSESSMENT_ISSUED anchors) — under the one-Referee-per-incident binding these are earlier appeal-round revisions by the same Referee; a re-assessment by a different Referee is a separate incident (STD-020). 0 for a first assessment. The Referee MUST retrieve this value from the Keeper before issuing the result."
     },
     "prior_verdict_refs": {
       "type": "array",

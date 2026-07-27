@@ -158,10 +158,10 @@
     },
     {
       "norm_id": "RACKP-STD-020",
-      "name": "Re-Assessment Fee Obligation",
-      "description": "When a party initiates a re-assessment of an incident for which a CONTRIBUTION_RESULT has already been issued, that initiating party must bear the full escrow deposit for the re-assessment. Transfer of the re-assessment fee to the opposing party — whether through the escrow mechanism or by contractual arrangement with the Referee operator — is prohibited, regardless of the fault ratio determined in the resulting CONTRIBUTION_RESULT. The Keeper identifies re-assessments by checking prior ASSESSMENT_ISSUED anchors for the same incident_id.",
+      "name": "Re-Assessment Filing and Fee Obligation",
+      "description": "A re-assessment — a subsequent assessment of the same underlying event by a different Referee after a CONTRIBUTION_RESULT has been issued — is filed as a new incident under a new incident_id; an incident_id is bound to a single Referee for its lifetime and is never re-opened before a different Referee. The initiating party files as the Claimant of the new incident and must bear the full escrow deposit for it (the STD-029 requester default; a declared fee.deposit allocation does not shift any share onto the opposing party of a re-assessment). Transfer of the re-assessment fee to the opposing party — whether through the escrow mechanism or by contractual arrangement with the Referee operator — is prohibited, regardless of the fault ratio determined in the resulting CONTRIBUTION_RESULT. The initiating party should declare the original incident via prior_incident_ids in the ASSESSMENT_REQUEST so the results are linked through verified_prior_incidents and related_incident_ids; linkage is voluntary — both results persist as anchored records either way, and their joint evaluation is delegated to the judicial layer.",
       "severity": "HIGH",
-      "applies_to": ["ACTOR", "CLAIMANT", "KEEPER"]
+      "applies_to": ["ACTOR", "CLAIMANT", "REFEREE"]
     },
     {
       "norm_id": "RACKP-STD-021",
