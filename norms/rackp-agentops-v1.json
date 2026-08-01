@@ -1,0 +1,51 @@
+{
+  "$schema": "./norm_profile.schema.json",
+  "profile_id": "rackp.agentops.v1",
+  "jurisdiction_code": "rackp",
+  "domain": "agent-operations",
+  "profile_version": "1.0.0",
+  "effective_date": "2026-08-01",
+  "issuer": {
+    "name": "RACK Protocol",
+    "url": "https://rackp.io/norms/rackp-agentops-v1.json",
+    "contact": "https://github.com/rackp-io/rackp/issues"
+  },
+  "license": "CC0-1.0",
+  "source_regulations": [
+    {
+      "name": "RACK Protocol RFC-0001",
+      "article": "Sections 6.27, 9.1, 9.3",
+      "url": "https://github.com/rackp-io/rackp/blob/main/docs/RFC-0001.md"
+    }
+  ],
+  "norms": [
+    {
+      "norm_id": "AGENTOPS-001",
+      "name": "Configuration Identity Anchoring",
+      "description": "The terminal operating an AI agent must anchor the hash of the effective instruction set and configuration governing the agent's behavior at SESSION_START and on every subsequent change within the session, so that the version in force at the time of any action is determinable post-hoc. Anchoring is hash-only: the Keeper stays content-blind, and the domain-event semantics live in the anchored payload by design. The policy version in force is additionally determined by the norm declaration at session start (STD-009). A configuration change that is not anchored creates a gap in the delegation boundary record for the interval it governs; an unanchored configuration interval covering an incident action is recorded as a disclosed gap in the Actor's evidence coverage.",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR"]
+    },
+    {
+      "norm_id": "AGENTOPS-002",
+      "name": "Tool Grant Anchoring",
+      "description": "The terminal operating an AI agent must anchor each grant or revocation of a tool, permission scope, or other capability available to the agent, together with its effective window (grant time and, where applicable, revocation time), so that the tool set and permissions in force at the time of any action are determinable post-hoc. Anchoring is hash-only; the Keeper stays content-blind. A grant or revocation that is not anchored, or whose effective window cannot be reconstructed from the anchored records, is treated as a disclosed gap in the delegation boundary record for the interval it covers.",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR"]
+    },
+    {
+      "norm_id": "AGENTOPS-003",
+      "name": "Human Approval Anchoring",
+      "description": "The terminal operating an AI agent must anchor every human approval event for actions that require sign-off, bound to the action it authorizes (e.g., by referencing the action's CLAIM_ANCHOR data_hash or an equivalent binding identifier), so that the record shows which approver authorized which action and that the approval preceded the action. Anchoring is hash-only; the Keeper stays content-blind. An approval that is not anchored, or is anchored without a binding to the action it authorizes, is treated as a disclosed gap in the delegation boundary record.",
+      "severity": "CRITICAL",
+      "applies_to": ["ACTOR"]
+    },
+    {
+      "norm_id": "AGENTOPS-004",
+      "name": "Delegation Boundary Admissibility Mapping",
+      "description": "When assessing an incident involving an AI agent under this profile, the Referee must weigh the presence or absence of each artifact class (configuration identity anchors, tool grant anchors, human approval anchors) in the Actor's evidence_sufficiency coverage and gaps, and on the provenance axis, and must disclose the mapping applied in assessment.detailed_report. Presence of all three classes for the interval of the incident action anchors the delegation boundary and supports attribution of the action to the operator rather than to the model alone; absence of a class is recorded as a disclosed gap and reduces the weight of the Actor's evidence on the provenance axis. This norm preserves the boundary evidence only: apportionment within the Actor side (model vendor vs. operator vs. configurator) is outside the protocol's scope and remains with contract and judicial layers.",
+      "severity": "MEDIUM",
+      "applies_to": ["REFEREE"]
+    }
+  ]
+}
