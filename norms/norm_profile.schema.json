@@ -7,7 +7,7 @@
   "properties": {
     "profile_id": {
       "type": "string",
-      "pattern": "^[a-z0-9]+(?:\\.[a-z0-9]+)+$",
+      "pattern": "^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$",
       "description": "Unique profile identifier. MUST follow reverse-domain notation. The domain owner holds authority over that namespace. The authority attribution of a once-issued ID belongs to the domain owner at the time of issuance. Examples: jp.go.mlit.automotive.v1, rackp.standard.v1"
     },
     "jurisdiction_code": {
