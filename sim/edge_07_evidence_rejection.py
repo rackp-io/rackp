@@ -43,8 +43,8 @@ def run():
     # Phase 1 (session): each party declares its Norm once. Both anchor honestly across the
     # three incidents below, so every chain stays intact — the only deviation per case is
     # the explicit evidence refusal, never a missing chain.
-    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
 
     # ============================================================== Case A: Actor refuses
     print("\n--- Case A: Actor rejects evidence submission ---")

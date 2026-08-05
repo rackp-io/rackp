@@ -39,7 +39,7 @@ def run():
     R.publish_profile(keeper_name="Kr")
 
     # Phase 1: Norm declaration (Actor absent — PoHI is a Claimant-only flow).
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
 
     # C continuously anchors each step of its creative process (keystrokes, editing
     # session, video frames, …) to its Keeper. anchor_range brackets that activity.

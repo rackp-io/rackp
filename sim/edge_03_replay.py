@@ -30,8 +30,8 @@ def run():
     old_timestamp = (now - timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     # Phase 1: Norm declaration + anchoring.
-    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
     # An hour ago: a routine, legitimately anchored action. The Actor remembers it to
     # replay later as a stale-but-genuine record.
     A.act("patrol", {"x": 0, "y": 0}, timestamp=old_timestamp)

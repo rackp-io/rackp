@@ -11,7 +11,7 @@
 from classes.topology import standard_world
 
 NORM_PROFILE_ID = "rackp.standard.v1"
-NORM_FETCH_URL  = "https://rackp.io/norms/standard/v1"
+NORM_FETCH_URL  = "https://rackp.io/norms/rackp-standard-v1.json"
 
 def run():
     # publish_profile=False: this scenario publishes the profile explicitly in Act 1.

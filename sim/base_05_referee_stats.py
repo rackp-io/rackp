@@ -16,8 +16,8 @@ def run():
     INC_005b = "00000005-000b-4000-8000-00000000005b"
 
     # Phase 1: Norm declaration (once per session)
-    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
 
     # case 1: standard assessment
     print("\n--- incident INC-005a ---")

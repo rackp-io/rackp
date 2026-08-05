@@ -33,7 +33,7 @@ def run():
     R.publish_profile(keeper_name="Kr")
 
     # Phase 1-2: Claimant declares, anchors, deposits, and opens the incident.
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
     C.act("move", {"x": 1, "y": 2})
     C.deposit_fee(INC, amount=100, currency="USD")          # → Kc escrow, timer armed
     C.send_assessment_request(actor_name="A", incident_id=INC)  # → INCIDENT_OPEN to Kc

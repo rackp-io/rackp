@@ -44,8 +44,8 @@ def run():
 
     # ---------------- Round 1: standard assessment (C files against A with R) ----------------
     print("\n--- Round 1: INC_A - C files against A with R ---")
-    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
     A.act("move", {"x": 1, "y": 2})
     C.act("move", {"x": 1, "y": 2})
 

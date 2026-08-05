@@ -28,8 +28,8 @@ def run():
     # ===================== Act 1: pull-based payment, declared 50/50 split =====================
     print("\n--- Act 1: pull-based FEE_CLAIM under a declared 50/50 split ---")
     # Phase 1: Norm declaration + evidence anchoring
-    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
     A.act("move", {"x": 3, "y": 4})
     C.act("move", {"x": 3, "y": 4})
 

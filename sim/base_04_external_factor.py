@@ -13,8 +13,8 @@ def run():
     EXT_DESC = "Third-party infrastructure failure caused the incident."
 
     # Phase 1: Norm declaration + evidence anchoring (both parties include external_factor_claim)
-    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
     A.act("move", {"x": 1, "y": 2})
     C.act("move", {"x": 1, "y": 2})
     # An external_factor_claim with claimed=True MUST cite supporting_evidence_refs:

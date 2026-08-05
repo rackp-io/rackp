@@ -35,7 +35,7 @@ def run():
     # Phase 1: Norm declaration + evidence anchoring. The Claimant anchors honestly
     # (SESSION_START + act → an intact chain). The Actor anchors NOTHING — no session_start,
     # no act — so its Keeper (Ka) will hold zero anchors for it. THIS is the deviation.
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
     C.act("move", {"x": 1, "y": 2})
     # (no A.session_start, no A.act — the Actor never builds an anchor trail)
     #

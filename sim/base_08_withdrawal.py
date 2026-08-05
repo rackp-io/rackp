@@ -12,8 +12,8 @@ def run():
     INC_008 = "00000008-0000-4000-8000-000000000008"
 
     # Phase 1: Norm declaration + evidence anchoring
-    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/standard/v1"}])
+    A.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
+    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
     A.act("negotiate", {"offer_id": "OFF-001", "value": 500})
     C.act("negotiate", {"offer_id": "OFF-001", "value": 500})
 
