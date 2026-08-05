@@ -1,0 +1,52 @@
+{
+  "$schema": "./norm_profile.schema.json",
+  "profile_id": "rackp.agent-ops.v1",
+  "description": "Optional domain profile for agent operations. This profile is never applied by default and is not part of the Standard Norm: it binds a terminal only when that terminal declares it in norm_profiles at SESSION_START (RFC-0001 Section 9.3). When no declaration is made, only the Standard Norm (rackp.standard.v1) applies. Background: RFC-0002 Section 3, Known Risks and Limitations, 'Unrecorded delegation boundary'.",
+  "jurisdiction_code": "rackp",
+  "domain": "agent-operations",
+  "profile_version": "1.0.0",
+  "effective_date": "2026-08-05",
+  "issuer": {
+    "name": "RACK Protocol",
+    "url": "https://rackp.io/norms/rackp-agent-ops-v1.json",
+    "contact": "https://github.com/rackp-io/rackp/issues"
+  },
+  "license": "CC0-1.0",
+  "source_regulations": [
+    {
+      "name": "RACK Protocol RFC-0001",
+      "article": "Sections 6.1, 9.1, 9.3",
+      "url": "https://github.com/rackp-io/rackp/blob/main/docs/RFC-0001.md"
+    }
+  ],
+  "norms": [
+    {
+      "norm_id": "RACKP-AGENTOPS-001",
+      "name": "Configuration Identity Anchoring",
+      "description": "A terminal operating an AI agent under this profile must anchor the hash of the effective instruction set and configuration governing the agent at the start of each session, and again on every change to that set within the session, so that the configuration in force at the time of any anchored action is determinable post-hoc. The session-start record may be carried in the SESSION_START anchor's own data_hash or in a separate anchor at the session boundary; what this norm fixes is the anchoring moment, not the carrying anchor. Anchoring is hash-only: the payload is not disclosed to the Keeper, and this profile does not define the payload format — any serialization with a canonical form is acceptable, since the protocol commits only to data_hash. The Norm Profile in force is declared separately at session start under STD-009; this norm concerns the agent's own configuration, not the norm declaration. An anchored action whose governing configuration interval is not covered by anchored records is recorded as a disclosed gap in the delegation boundary record, not as a technical violation (RACKP-AGENTOPS-004).",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR"]
+    },
+    {
+      "norm_id": "RACKP-AGENTOPS-002",
+      "name": "Tool Grant Anchoring",
+      "description": "A terminal operating an AI agent under this profile must anchor each grant and each revocation of a tool, permission scope, or other capability available to the agent, at the time it takes effect, such that the effective window of every capability in force at the time of any anchored action can be reconstructed from the anchored records. Anchoring is hash-only; this profile does not define the payload format. A grant or revocation that is not anchored, or whose effective window cannot be reconstructed from the anchored records, is recorded as a disclosed gap in the delegation boundary record, not as a technical violation (RACKP-AGENTOPS-004).",
+      "severity": "HIGH",
+      "applies_to": ["ACTOR"]
+    },
+    {
+      "norm_id": "RACKP-AGENTOPS-003",
+      "name": "Human Approval Anchoring",
+      "description": "A terminal operating an AI agent under this profile must anchor each human approval event for an action that requires human sign-off, bound to the action it authorizes. The binding must be carried inside the signed approval payload: an approval whose reference to the authorized action is not covered by its own signature can be presented for a different action, and does not satisfy this norm. Anchoring is hash-only; this profile does not define the payload format. A required approval that is not anchored, or is anchored without such a binding, is recorded as a disclosed gap in the delegation boundary record, not as a technical violation (RACKP-AGENTOPS-004).",
+      "severity": "CRITICAL",
+      "applies_to": ["ACTOR"]
+    },
+    {
+      "norm_id": "RACKP-AGENTOPS-004",
+      "name": "Delegation Boundary Disclosure",
+      "description": "When assessing an incident under this profile, the Referee must record in evidence_sufficiency which of the artifact classes required by RACKP-AGENTOPS-001 through RACKP-AGENTOPS-003 were available for the interval of the incident action, listing each absent class in gaps, and must state in detailed_report which classes were present and what the available record did and did not establish. Absence of a required artifact class must not be factored into the fault values and must not be listed in technical_violation — the same boundary STD-010 and STD-030 draw for fee compliance and participation status. Its consequences flow from the evidence, not from a penalty: an absent record establishes nothing, and that shortfall is reflected through evidence_sufficiency, assessment_status, and fault.confidence like any other evidence gap. This profile takes no position on apportionment within the Actor side (model vendor, operator, configurator), which remains with contract and judicial layers; its function is to preserve the boundary evidence that makes such apportionment possible.",
+      "severity": "MEDIUM",
+      "applies_to": ["REFEREE"]
+    }
+  ]
+}
