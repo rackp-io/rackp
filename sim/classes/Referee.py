@@ -828,9 +828,13 @@ class Referee(Agent):
                 "ai_ratio":        ai_ratio,
                 "confidence_level": confidence
             },
+            # keeper_public_key is recorded at issuance so the certificate carries its own
+            # root of trust (RFC §8.4): keeper_endpoint stops resolving when the operator
+            # winds down, and the key would otherwise survive only as a self-asserted value.
             "keeper": {
-                "keeper_id":       self.world.agents[keeper_name].terminal_id,
-                "keeper_endpoint": f"sim://{keeper_name}"
+                "keeper_id":         self.world.agents[keeper_name].terminal_id,
+                "keeper_endpoint":   f"sim://{keeper_name}",
+                "keeper_public_key": f"PUBKEY_{self.world.agents[keeper_name].terminal_id}"
             },
             "subject_data_hash": binding["subject_data_hash"],
             "cert_url":   f"https://rackp.example/phi/{cert_id}",

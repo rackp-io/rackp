@@ -100,6 +100,10 @@ def run():
     # The sum reaching 1.0 in this scenario is a consequence of human_ratio being 1.0, not an
     # invariant: asserting the sum would re-impose the partition this flow must not assume.
     assert prov["ai_ratio"] == 0.0, "ai_ratio must never be derived as 1 - human_ratio"
+    # The cert carries the Keeper's key, so an archival export stays verifiable after the
+    # endpoint is gone (§8.4) — the Keeper that answered ANCHOR_CHAIN_QUERY, not the Referee's.
+    assert cert["keeper"]["keeper_public_key"] == f"PUBKEY_{Kc.terminal_id}", \
+        f"the cert must carry the subject Keeper's public key, got {cert['keeper']}"
     # The filing used a generic, no-Actor ASSESSMENT_REQUEST — actor_id omitted entirely.
     req = world.last("R", "ASSESSMENT_REQUEST")
     assert req is not None and "actor_id" not in req, "a PoHI filing omits actor_id (Claimant-only)"
@@ -120,7 +124,8 @@ def run():
 
     print("[OK] PoHI via canonical §8 flow (generic messages, no PoHI-specific type):"
           " no-Actor ASSESSMENT_REQUEST + artifact binding in EVIDENCE_SUBMISSION payload ->"
-          " POH_CERTIFICATE, human_ratio=1.0/ai_ratio=0.0 (not a partition), HIGH; binding intact;"
+          " POH_CERTIFICATE, human_ratio=1.0/ai_ratio=0.0 (not a partition), HIGH;"
+          " binding intact; keeper_public_key carried;"
           " single-depositor fee SETTLED; POH_CERT_ISSUED -> poh_cert_count=1 (license-billable),"
           " assessment_count=0 (reputation denominators uncontaminated).")
 

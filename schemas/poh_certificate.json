@@ -70,9 +70,13 @@
           "type": "string",
           "format": "uri",
           "description": "Optional endpoint URL of the Keeper for direct chain verification queries."
+        },
+        "keeper_public_key": {
+          "$ref": "common.json#/$defs/public_key",
+          "description": "The Keeper's signing public key as of issuance. Lets the certificate carry its own root of trust, so a third party can verify a signed archival export of the anchor chain (RFC-0002 Section 3) after keeper_endpoint stops resolving. Without it, the Keeper's key is obtainable only from the live endpoint (STD-034) and becomes self-asserted once the operator winds down."
         }
       },
-      "required": ["keeper_id"]
+      "required": ["keeper_id", "keeper_public_key"]
     },
     "subject_data_hash": {
       "$ref": "common.json#/$defs/sha256_hash",
