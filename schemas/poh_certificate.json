@@ -42,13 +42,13 @@
           "type": "number",
           "minimum": 0,
           "maximum": 1,
-          "description": "Estimated proportion of human involvement (0.0–1.0)."
+          "description": "Proportion of the artifact evidenced as human involvement (0.0–1.0)."
         },
         "ai_ratio": {
           "type": "number",
           "minimum": 0,
           "maximum": 1,
-          "description": "Estimated proportion of AI involvement (0.0–1.0)."
+          "description": "Proportion of the artifact positively evidenced as AI involvement (0.0–1.0). Unlike contribution_result.json, human_ratio and ai_ratio do NOT partition the artifact here: 1 - human_ratio - ai_ratio is the unattributed remainder. 0.0 means no AI involvement was evidenced, not that none occurred."
         },
         "confidence_level": {
           "type": "string",

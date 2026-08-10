@@ -803,7 +803,11 @@ class Referee(Agent):
         surfaced by ANCHOR_CHAIN_QUERY) and issues a POH_CERTIFICATE bound to the artifact's
         subject_data_hash; schema: schemas/poh_certificate.json"""
         human_ratio = min(1.0, round(count / 5.0, 2)) if count > 0 else 0.0
-        ai_ratio    = round(1.0 - human_ratio, 2)
+        # PoHI provenance is NOT a partition (RFC §8.4): ai_ratio carries only positively
+        # evidenced AI involvement, never the complement of human_ratio. An anchor chain
+        # shows which input path text arrived by, not where imported text came from, so
+        # 1 - human_ratio is an unattributed remainder — not evidence of AI.
+        ai_ratio    = 0.0
         confidence  = "HIGH" if count >= 5 else ("MEDIUM" if count >= 2 else "LOW")
 
         now_str       = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
