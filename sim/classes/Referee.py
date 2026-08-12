@@ -673,7 +673,13 @@ class Referee(Agent):
             # linkage lives in verified_prior_incidents (§6.6), printed below.
             **({"related_incident_ids": list(inc.get("prior_incident_ids", []))}
                if inc.get("prior_incident_ids") else {}),
-            "timestamp": now.strftime("%Y-%m-%dT%H:%M:%SZ")
+            "timestamp": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            # RFC §6.14 — the result is the assessment itself and the document a party
+            # carries to another Referee when contesting it, so it is signed like any
+            # other issued artifact. proof_hash shows only internal consistency (anyone
+            # can recompute it over a fabricated result) and the ASSESSMENT_ISSUED anchor
+            # commits to the cert_id and issuance time, not to the content.
+            "signature": f"SIG_{self.terminal_id}"
         }
 
         prior_count = result["prior_assessment_count"]

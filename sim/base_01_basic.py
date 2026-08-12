@@ -62,6 +62,11 @@ def run():
         "both parties must receive the same cert_id"
     # First assessment for this Referee → reputation snapshot count is 1 (§6.19).
     assert result["referee_reputation_snapshot"]["total_assessments"] == 1
+    # §6.14 — the verdict is signed by the issuing Referee. Without it a recipient can
+    # confirm neither authorship nor content: proof_hash is recomputable over a forged
+    # result, and the ASSESSMENT_ISSUED anchor binds only cert_id and issuance time.
+    assert result["signature"] == f"SIG_{R.terminal_id}", \
+        f"the verdict must carry the Referee's signature, got {result.get('signature')}"
 
     verdict = result["assessment"]
     fault   = verdict["fault"]
