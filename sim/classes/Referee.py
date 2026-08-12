@@ -1,7 +1,7 @@
 # classes/Referee.py
 import uuid
 from classes.Agent import Agent
-from classes.Hasher import hash_claim
+from classes.Hasher import hash_claim, hash_norm_document
 from datetime import datetime, timezone, timedelta
 
 class Referee(Agent):
@@ -837,6 +837,20 @@ class Referee(Agent):
             # keeper_public_key is recorded at issuance so the certificate carries its own
             # root of trust (RFC §8.4): keeper_endpoint stops resolving when the operator
             # winds down, and the key would otherwise survive only as a self-asserted value.
+            # norms_used (§8.4): the profile carries the measurement definition, so the ratio
+            # above is uninterpretable without knowing which revision produced it. One hash
+            # per profile — not one digest over the set — so a profile that is still
+            # retrievable stays verifiable when another issuer's document is gone.
+            # profile_version is deliberately absent: the hash pins the document, and the
+            # version lives inside the document it pins.
+            "norms_used": [
+                {"profile_id": pid, "applied_document_hash": hash_norm_document(pid)}
+                for pid in sorted(
+                    self._incidents.get(incident_id, {})
+                    .get("declared_norms", {})
+                    .get(claimant_tid, [self.STANDARD_NORM])
+                )
+            ],
             "keeper": {
                 "keeper_id":         self.world.agents[keeper_name].terminal_id,
                 "keeper_endpoint":   f"sim://{keeper_name}",

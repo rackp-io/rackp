@@ -58,6 +58,29 @@
       },
       "required": ["human_ratio", "ai_ratio", "confidence_level"]
     },
+    "norms_used": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The Norm Profiles applied to this certification. Section 4.1 requires a Referee to disclose which Local Norms an assessment rested on; for PoHI the profile also carries the measurement definition (Section 8.2), so a ratio cannot be interpreted without knowing which revision produced it.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "description": "Reverse-domain identifier of the applied Norm Profile."
+          },
+          "applied_document_hash": {
+            "$ref": "common.json#/$defs/sha256_hash",
+            "description": "SHA-256 of the RFC 8785 (JCS) canonical form of the profile document the Referee actually retrieved and applied. JCS rather than the retrieved bytes so that line endings, indentation, key order and encoding cannot change the value. Recorded per profile rather than as one digest over the set, so that a profile still retrievable can be verified even when another issuer's document is gone. The profile_version is not recorded separately: this hash pins the document, and the version is inside the document it pins."
+          },
+          "declared_document_hash": {
+            "$ref": "common.json#/$defs/sha256_hash",
+            "description": "(Optional) The hash the subject declared at SESSION_START, when one was declared. Present so that a divergence from applied_document_hash is visible in the certificate itself. The Referee records both values and draws no conclusion from a difference: as with norm_jurisdiction_mismatch (Section 9.5), it records and discloses only."
+          }
+        },
+        "required": ["profile_id", "applied_document_hash"]
+      }
+    },
     "keeper": {
       "type": "object",
       "description": "The Keeper that holds the Claimant's anchoring records used as the basis for this certificate. Enables independent verification of the anchor chain by any third party.",
@@ -104,6 +127,7 @@
     "subject_terminal_id",
     "anchor_range",
     "provenance",
+    "norms_used",
     "keeper",
     "subject_data_hash",
     "cert_url",

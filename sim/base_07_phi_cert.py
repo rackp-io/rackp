@@ -104,6 +104,16 @@ def run():
     # endpoint is gone (§8.4) — the Keeper that answered ANCHOR_CHAIN_QUERY, not the Referee's.
     assert cert["keeper"]["keeper_public_key"] == f"PUBKEY_{Kc.terminal_id}", \
         f"the cert must carry the subject Keeper's public key, got {cert['keeper']}"
+    # §8.4 — the cert records which Norm Profile document produced the ratio above. The
+    # hash is computed over the real norms/rackp-standard-v1.json, so editing that file
+    # changes this value: that is the property the field exists for. profile_version is
+    # deliberately absent — the hash pins the document and the version is inside it.
+    from classes.Hasher import hash_norm_document
+    assert cert["norms_used"] == [
+        {"profile_id": "rackp.standard.v1",
+         "applied_document_hash": hash_norm_document("rackp.standard.v1")}
+    ], f"the cert must record the applied Norm document, got {cert.get('norms_used')}"
+
     # The filing used a generic, no-Actor ASSESSMENT_REQUEST — actor_id omitted entirely.
     req = world.last("R", "ASSESSMENT_REQUEST")
     assert req is not None and "actor_id" not in req, "a PoHI filing omits actor_id (Claimant-only)"
