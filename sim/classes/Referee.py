@@ -4,6 +4,14 @@ from classes.Agent import Agent
 from classes.Hasher import hash_claim, hash_norm_document
 from datetime import datetime, timezone, timedelta
 
+# The specification version this simulation implements. Recorded on every issued
+# artifact (RFC-0001 §6.14, §6.19, §8.4): issue_date cannot recover it, because a
+# date records what the specification said rather than what the issuer had adopted,
+# and §10 leaves migration to each implementor. Raised in CHANGELOG.md whenever the
+# meaning of a field, the set of required fields, or a computation changes.
+RACKP_VERSION = "0.2.0-alpha"
+
+
 class Referee(Agent):
     MINIMUM_APPEAL_ROUNDS = 3  # RFC protocol constant
     STANDARD_NORM = "rackp.standard.v1"  # §9.3 default ("Undeclared Norm")
@@ -626,6 +634,7 @@ class Referee(Agent):
         result = {
             "type": "CONTRIBUTION_RESULT",
             "network": "TESTNET",
+            "rackp_version": RACKP_VERSION,
             "incident_id": incident_id,
             "referee_id": self.terminal_id,
             "referee_reputation_snapshot": {
@@ -823,6 +832,7 @@ class Referee(Agent):
 
         cert = {
             "type":               "POH_CERTIFICATE",
+            "rackp_version":      RACKP_VERSION,
             "cert_id":            cert_id,
             "issue_date":         now_str,
             "referee_id":         self.terminal_id,
@@ -927,6 +937,7 @@ class Referee(Agent):
         return {
             "type": "REFEREE_PROFILE",
             "network": "TESTNET",
+            "rackp_version": RACKP_VERSION,
             "referee_id": self.terminal_id,
             "public_key": f"PUBKEY_{self.terminal_id}",
             "endpoint": f"sim://{self.name}",

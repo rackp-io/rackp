@@ -1,7 +1,7 @@
 ﻿# <img src="docs/images/logo.png" width="32" alt=""> RACK Protocol (Referee-Actor-Claimant-Keeper)
 
 [![License: Source Available](https://img.shields.io/badge/License-Source%20Available-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0--alpha-blue.svg)]()
+[![Version](https://img.shields.io/github/v/tag/rackp-io/rackp?sort=semver&label=version&color=blue)](CHANGELOG.md)
 [![Field](https://img.shields.io/badge/Focus-AI_Governance_%26_Trust-green.svg)]()
 
 
