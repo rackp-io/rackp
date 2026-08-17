@@ -5,7 +5,7 @@
   "jurisdiction_code": "rackp",
   "domain": "agent-operations",
   "profile_version": "1.0.0",
-  "effective_date": "2026-08-05",
+  "effective_date": "2026-08-17",
   "issuer": {
     "name": "RACK Protocol",
     "url": "https://rackp.io/norms/rackp-agent-ops-v1.json",
