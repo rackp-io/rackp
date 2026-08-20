@@ -12,8 +12,8 @@
       "description": "The network to which this assessment belongs. TESTNET results MUST NOT be registered in or referenced from the production evidence chain. The Keeper validates the network before deciding whether to record the result in the ledger. Additional network types (e.g., STAGING, PRIVATE) are not defined by this version of the protocol; extensions are left to community discussion."
     },
     "rackp_version": {
-      "type": "string",
-      "description": "Version of the RACK Protocol specification the issuing implementation follows (e.g. 0.2.0-alpha). The specification is versioned as a whole and each version is a signed tag on the specification repository, so this value resolves to exact normative text. issue_date does not substitute for it: a date records what the specification said, not what the issuing implementation had adopted, and RFC-0001 Section 10 leaves migration to each implementor's discretion."
+      "$ref": "common.json#/$defs/rackp_version",
+      "description": "Version of the RACK Protocol specification the issuing implementation follows. issue_date does not substitute for it: a date records what the specification said, not what the issuing implementation had adopted, and RFC-0001 Section 10 leaves migration to each implementor's discretion."
     },
     "incident_id": {
       "$ref": "common.json#/$defs/uuid"
