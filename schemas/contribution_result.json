@@ -252,7 +252,7 @@
         },
         "norm_jurisdiction_mismatch": {
           "type": "string",
-          "description": "(Optional) Description of any discrepancy between the declared Norm Profile's jurisdiction/domain and the actual characteristics of the incident. SHOULD include a description of the Norm Profile the Referee would have selected based on the incident's actual context. This record does not invalidate the assessment; it is material for post-hoc verification of Norm selection appropriateness. See Section 9.4."
+          "description": "(Optional) Description of any discrepancy between the declared Norm Profile's jurisdiction/domain and the actual characteristics of the incident. SHOULD include a description of the Norm Profile the Referee would have selected based on the incident's actual context. This record does not invalidate the assessment; it is material for post-hoc verification of Norm selection appropriateness. See Section 9.5."
         }
       },
       "required": ["factual_findings", "fault", "provenance_score", "detailed_report", "evidence_sufficiency", "fee_compliance", "actor_participation", "norms_used", "certification"]
