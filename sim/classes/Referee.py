@@ -667,8 +667,8 @@ class Referee(Agent):
                 "certification": {
                     "cert_id":    cert_id,
                     "issue_date": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                    "cert_url":   f"https://rackp.example/verify/{cert_id}",
-                    "proof_hash": "b" * 64
+                    "cert_url":   f"https://rackp.example/verify/{cert_id}"
+                    # proof_hash filled in below, once the body it commits to is complete.
                 }
             },
             "evidence_provenance": ", ".join(
@@ -683,13 +683,22 @@ class Referee(Agent):
             **({"related_incident_ids": list(inc.get("prior_incident_ids", []))}
                if inc.get("prior_incident_ids") else {}),
             "timestamp": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-            # RFC §6.14 — the result is the assessment itself and the document a party
-            # carries to another Referee when contesting it, so it is signed like any
-            # other issued artifact. proof_hash shows only internal consistency (anyone
-            # can recompute it over a fabricated result) and the ASSESSMENT_ISSUED anchor
-            # commits to the cert_id and issuance time, not to the content.
-            "signature": f"SIG_{self.terminal_id}"
         }
+
+        # §6.14 proof_hash: hash of the result body with assessment.certification.proof_hash
+        # itself absent (nothing to exclude yet — it has not been added) and no signature
+        # attached. Computed before the signature, so the signature covers this value —
+        # matching the real Referee's ordering (rackp-referee/src/assess.ts). The sim's
+        # Hasher is a simplified JCS (json.dumps(sort_keys=True); see Hasher.hash_claim),
+        # so this value is internally consistent within the simulation, not a
+        # cross-implementation vector: proof_hash shows only that consistency (anyone can
+        # recompute it over a fabricated result), and the ASSESSMENT_ISSUED anchor commits
+        # to the cert_id and issuance time, not to the content.
+        result["assessment"]["certification"]["proof_hash"] = hash_claim(result)
+        # RFC §6.14 — the result is the assessment itself and the document a party
+        # carries to another Referee when contesting it, so it is signed like any
+        # other issued artifact.
+        result["signature"] = f"SIG_{self.terminal_id}"
 
         prior_count = result["prior_assessment_count"]
         prior_inc_ids = inc.get("prior_incident_ids", [])
@@ -829,6 +838,16 @@ class Referee(Agent):
         cert_id       = str(uuid.uuid4())
         claimant_name = self.world.route_by_tid(claimant_tid)
         anchor_range  = binding.get("anchor_range", {})
+        claimant_norm_ids = sorted(
+            self._incidents.get(incident_id, {})
+            .get("declared_norms", {})
+            .get(claimant_tid, [self.STANDARD_NORM])
+        )
+        declared_document_hashes = (
+            self._incidents.get(incident_id, {})
+            .get("declared_document_hashes", {})
+            .get(claimant_tid, {})
+        )
 
         cert = {
             "type":               "POH_CERTIFICATE",
@@ -853,13 +872,19 @@ class Referee(Agent):
             # retrievable stays verifiable when another issuer's document is gone.
             # profile_version is deliberately absent: the hash pins the document, and the
             # version lives inside the document it pins.
+            #
+            # declared_document_hash (§8.4, optional): present only when the subject's
+            # SESSION_START carried norm_document_hash for that profile. Recorded
+            # alongside applied_document_hash with no reconciliation — a mismatch is
+            # disclosed, not resolved, same as norm_jurisdiction_mismatch above.
             "norms_used": [
-                {"profile_id": pid, "applied_document_hash": hash_norm_document(pid)}
-                for pid in sorted(
-                    self._incidents.get(incident_id, {})
-                    .get("declared_norms", {})
-                    .get(claimant_tid, [self.STANDARD_NORM])
-                )
+                {
+                    "profile_id": pid,
+                    "applied_document_hash": hash_norm_document(pid),
+                    **({"declared_document_hash": declared_document_hashes[pid]}
+                       if pid in declared_document_hashes else {}),
+                }
+                for pid in claimant_norm_ids
             ],
             "keeper": {
                 "keeper_id":         self.world.agents[keeper_name].terminal_id,
@@ -868,9 +893,13 @@ class Referee(Agent):
             },
             "subject_data_hash": binding["subject_data_hash"],
             "cert_url":   f"https://rackp.example/phi/{cert_id}",
-            "proof_hash": "e" * 64,
-            "signature":  f"SIG_{self.terminal_id}_phi_{cert_id[:8]}"
         }
+        # §8.4 proof_hash: hash of the certificate body with proof_hash itself absent
+        # (unlike CONTRIBUTION_RESULT's, this exclusion is not nested — see the sim's
+        # Hasher docstring on why this value is internal-consistency only, not a
+        # cross-implementation vector) and signature not yet attached.
+        cert["proof_hash"] = hash_claim(cert)
+        cert["signature"] = f"SIG_{self.terminal_id}_phi_{cert_id[:8]}"
 
         print(f"\n[{self.name}] === POH_CERTIFICATE issued ===")
         print(f"[{self.name}]   cert_id:      {cert_id}")
@@ -1186,6 +1215,17 @@ class Referee(Agent):
                 if profiles:
                     ids = [p["norm_profile_id"] for p in profiles]
                     inc.setdefault("declared_norms", {})[terminal_id] = ids
+                    # §9.3/§8.4 — a profile MAY carry norm_document_hash, the hash the
+                    # subject committed to before the Referee assessed. Kept per profile
+                    # (not folded into `ids`) so a certificate can show it alongside
+                    # applied_document_hash and let a divergence surface as recorded
+                    # fact rather than as a discarded declaration.
+                    declared_hashes = {
+                        p["norm_profile_id"]: p["norm_document_hash"]
+                        for p in profiles if p.get("norm_document_hash")
+                    }
+                    if declared_hashes:
+                        inc.setdefault("declared_document_hashes", {})[terminal_id] = declared_hashes
 
         if count == 0:
             print(f"[R] anchor chain: {terminal_id}  no anchors found")

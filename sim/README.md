@@ -10,7 +10,7 @@ expected outcome, so the suite doubles as a behavioral specification and a regre
   `Claimant`, `Keeper`, plus `Claim`, `Message`, `Hasher`.
 - `scenario_actor/` — adversarial / variant Actors (liar, replay, selective, …) used by edge scenarios.
 - `base_01_*.py` … `base_12_*.py` — happy-path and core protocol flows.
-- `edge_01_*.py` … `edge_14_*.py` — deviation cases (falsified evidence, timeouts, abandonment, …).
+- `edge_01_*.py` … `edge_15_*.py` — deviation cases (falsified evidence, timeouts, abandonment, …).
 - `tools/check_refs.py` — cross-checks every `§section` / `STD-NNN` / `schemas/*` reference in
   the sim against RFC-0001, RFC-0002, TRANSPORT-BINDING.md and the schema files.
 

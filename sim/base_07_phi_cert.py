@@ -20,7 +20,7 @@ from classes.World import World
 from classes.Claimant import Claimant
 from classes.Referee import Referee
 from classes.Keeper import Keeper
-from classes.Hasher import hash_claim
+from classes.Hasher import hash_claim, hash_norm_document
 from datetime import datetime, timezone
 
 def run():
@@ -39,7 +39,14 @@ def run():
     R.publish_profile(keeper_name="Kr")
 
     # Phase 1: Norm declaration (Actor absent — PoHI is a Claimant-only flow).
-    C.session_start([{"norm_profile_id": "rackp.standard.v1", "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json"}])
+    # C also declares norm_document_hash — the hash it committed to before the Referee
+    # assessed (§9.3). It matches the document the Referee actually applies, so this
+    # scenario exercises the field reaching the certificate; the divergent case (a
+    # declaration that does NOT match what was applied) is edge_15.
+    declared_hash = hash_norm_document("rackp.standard.v1")
+    C.session_start([{"norm_profile_id": "rackp.standard.v1",
+                      "norm_fetch_url": "https://rackp.io/norms/rackp-standard-v1.json",
+                      "norm_document_hash": declared_hash}])
 
     # C continuously anchors each step of its creative process (keystrokes, editing
     # session, video frames, …) to its Keeper. anchor_range brackets that activity.
@@ -108,11 +115,23 @@ def run():
     # hash is computed over the real norms/rackp-standard-v1.json, so editing that file
     # changes this value: that is the property the field exists for. profile_version is
     # deliberately absent — the hash pins the document and the version is inside it.
-    from classes.Hasher import hash_norm_document
+    # declared_document_hash (§8.4, optional): present because C declared one at
+    # SESSION_START above, and equal to applied_document_hash because the declaration
+    # matches what the Referee actually applied — the no-divergence case. edge_15
+    # covers the declaration surfacing a mismatch instead.
     assert cert["norms_used"] == [
         {"profile_id": "rackp.standard.v1",
-         "applied_document_hash": hash_norm_document("rackp.standard.v1")}
-    ], f"the cert must record the applied Norm document, got {cert.get('norms_used')}"
+         "applied_document_hash": hash_norm_document("rackp.standard.v1"),
+         "declared_document_hash": declared_hash}
+    ], f"the cert must record the applied AND declared Norm document, got {cert.get('norms_used')}"
+
+    # proof_hash (§8.4, rackp#18): unlike CONTRIBUTION_RESULT's, this exclusion is not
+    # nested — proof_hash sits at the certificate's top level alongside signature. A
+    # regression lock on that exclusion, using the sim's own Hasher (internal
+    # consistency only; see base_01's equivalent check and Hasher.hash_claim).
+    stripped_cert = {k: v for k, v in cert.items() if k not in ("proof_hash", "signature")}
+    assert cert["proof_hash"] == hash_claim(stripped_cert), \
+        "proof_hash must equal the hash of the certificate with proof_hash and signature excluded"
 
     # The filing used a generic, no-Actor ASSESSMENT_REQUEST — actor_id omitted entirely.
     req = world.last("R", "ASSESSMENT_REQUEST")

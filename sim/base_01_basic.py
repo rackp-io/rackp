@@ -67,6 +67,18 @@ def run():
     # result, and the ASSESSMENT_ISSUED anchor binds only cert_id and issuance time.
     assert result["signature"] == f"SIG_{R.terminal_id}", \
         f"the verdict must carry the Referee's signature, got {result.get('signature')}"
+    # proof_hash (§6.14, rackp#18): recomputing it requires excluding exactly
+    # assessment.certification.proof_hash (nested) and signature (top-level), and
+    # nothing else — a regression lock on that exclusion, not just on the field's
+    # presence. Uses the sim's own Hasher, so this checks internal consistency
+    # within the simulation, not cross-implementation JCS (see Hasher.hash_claim).
+    from classes.Hasher import hash_claim
+    stripped = {k: v for k, v in result.items() if k != "signature"}
+    stripped["assessment"] = {**stripped["assessment"],
+                              "certification": {k: v for k, v in stripped["assessment"]["certification"].items()
+                                                if k != "proof_hash"}}
+    assert result["assessment"]["certification"]["proof_hash"] == hash_claim(stripped), \
+        "proof_hash must equal the hash of the result with proof_hash and signature excluded"
 
     verdict = result["assessment"]
     fault   = verdict["fault"]
