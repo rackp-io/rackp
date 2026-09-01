@@ -22,6 +22,7 @@
 #     declared; the mismatch surfaces purely as the jurisdiction-metadata disclosure that
 #     RACKP is responsible for — exactly the §9.5 obligation.
 from classes.topology import standard_world
+from classes.Hasher import hash_norm_document
 
 def run():
     # Same canonical topology as base_01 (Kr/Kc/Ka); the parties simply declare Norms
@@ -104,8 +105,11 @@ def run():
     # (never a fixed constant, never one party's pick) and surfaces the conflict as a
     # norm_jurisdiction_mismatch disclosure. This is the §9.3 declaration read-back plus
     # the §9.5 disclosure obligation working together.
-    assert verdict["norms_used"] == sorted([ACTOR_NORM, CLAIMANT_NORM]), \
-        f"both declared Norms must be recorded, got {verdict['norms_used']}"
+    # {profile_id, applied_document_hash} per profile (§9.5, rackp#15).
+    assert verdict["norms_used"] == [
+        {"profile_id": pid, "applied_document_hash": hash_norm_document(pid)}
+        for pid in sorted([ACTOR_NORM, CLAIMANT_NORM])
+    ], f"both declared Norms must be recorded, got {verdict['norms_used']}"
     assert "norm_jurisdiction_mismatch" in verdict, \
         "a disjoint-Norm assessment must surface a norm_jurisdiction_mismatch disclosure"
     mismatch = verdict["norm_jurisdiction_mismatch"]

@@ -10,6 +10,7 @@
 from datetime import datetime, timedelta, timezone
 
 from classes.topology import standard_world
+from classes.Hasher import hash_norm_document
 
 # A non-default, domain-specific Norm both parties agree on. Deliberately NOT the
 # Standard Norm, so norms_used must follow the declaration rather than the fallback.
@@ -116,9 +117,13 @@ def run():
     # THE regression lock (RFC §9.3, §9.5): norms_used follows the DECLARED Norm, which is
     # non-standard here — so it must equal the declared profile and must NOT fall back to
     # the Standard Norm. A hardcoded norms_used would fail this assertion.
-    assert verdict["norms_used"] == [NORM_PROFILE_ID], \
-        f"norms_used must reflect the declared Norm, got {verdict['norms_used']}"
-    assert STANDARD_NORM not in verdict["norms_used"], \
+    # {profile_id, applied_document_hash} per profile (§9.5, rackp#15) -- neither party
+    # declared norm_document_hash here, so no declared_document_hash is expected.
+    assert verdict["norms_used"] == [
+        {"profile_id": NORM_PROFILE_ID, "applied_document_hash": hash_norm_document(NORM_PROFILE_ID)}
+    ], f"norms_used must reflect the declared Norm, got {verdict['norms_used']}"
+    used_profile_ids = [entry["profile_id"] for entry in verdict["norms_used"]]
+    assert STANDARD_NORM not in used_profile_ids, \
         "norms_used must NOT fall back to the Standard Norm when a Norm was declared"
     # Both declared the SAME Norm → assessed under it, with NO jurisdiction mismatch (§9.3).
     assert "norm_jurisdiction_mismatch" not in verdict, \

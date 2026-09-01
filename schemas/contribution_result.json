@@ -68,8 +68,25 @@
         },
         "technical_violation": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "List of technical norms or protocols that were violated"
+          "description": "Genuine integrity/protocol violations detected during assessment (e.g. a payload hash that does not match its anchored data_hash), each resolved to the Norm Profile it was found under. A bare norm_id does not identify a norm on its own: norm_id is unique only within a profile, and Section 9.1 has every profile layer on the Standard Norm, so more than one profile in play is the normal case. Never used for fee non-payment or Actor non-participation, which are disclosed via fee_compliance and actor_participation instead (Section 7).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "profile_id": {
+                "type": "string",
+                "description": "The Norm Profile that norm_id is defined in."
+              },
+              "norm_id": {
+                "type": "string",
+                "description": "The violated norm's identifier within profile_id."
+              },
+              "detail": {
+                "type": "string",
+                "description": "(Optional) Human-readable specifics of the violation (e.g. the computed vs. reported hash)."
+              }
+            },
+            "required": ["profile_id", "norm_id"]
+          }
         },
         "provenance_score": {
           "type": "object",
@@ -247,8 +264,25 @@
         },
         "norms_used": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "List of Local Norm profile IDs (reverse-domain notation, e.g., 'jp.go.mlit.automotive.v1') used as the basis for this assessment. The Referee MUST include this field."
+          "description": "The Norm Profile(s) used as the basis for this assessment. The Referee MUST include this field. Same shape as POH_CERTIFICATE.norms_used (Section 8.4): one entry per applied profile, carrying the hash of the document actually applied so a ratio or fault value is not read against a name whose text can drift under it.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "profile_id": {
+                "type": "string",
+                "description": "Reverse-domain identifier of the applied Norm Profile (e.g., 'jp.go.mlit.automotive.v1')."
+              },
+              "applied_document_hash": {
+                "$ref": "common.json#/$defs/sha256_hash",
+                "description": "SHA-256 of the RFC 8785 (JCS) canonical form of the profile document the Referee actually retrieved and applied. Recorded per profile rather than as one digest over the set, so a profile still retrievable stays verifiable when another issuer's document is gone. profile_version is not recorded separately: this hash pins the document, and the version is inside the document it pins."
+              },
+              "declared_document_hash": {
+                "$ref": "common.json#/$defs/sha256_hash",
+                "description": "(Optional) The hash the subject declared at SESSION_START, when one was declared (Section 9.3). Present so a divergence from applied_document_hash is visible in the result itself. The Referee records both values and draws no conclusion from a difference, exactly as with norm_jurisdiction_mismatch."
+              }
+            },
+            "required": ["profile_id", "applied_document_hash"]
+          }
         },
         "norm_jurisdiction_mismatch": {
           "type": "string",

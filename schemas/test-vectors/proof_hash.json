@@ -8,7 +8,7 @@
       "artifact_without_proof_hash": {
         "type": "CONTRIBUTION_RESULT",
         "network": "TESTNET",
-        "rackp_version": "0.2.0-alpha",
+        "rackp_version": "0.0.0-example",
         "incident_id": "44444444-4444-4444-8444-444444444444",
         "referee_id": "55555555-5555-4555-8555-555555555555",
         "referee_reputation_snapshot": {
@@ -53,7 +53,11 @@
             "confidence_level": "HIGH"
           },
           "norms_used": [
-            "rackp.standard.v1"
+            {
+              "profile_id": "rackp.standard.v1",
+              "applied_document_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "declared_document_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            }
           ],
           "detailed_report": {
             "report_url": "https://rackp.example/reports/44444444-4444-4444-8444-444444444444",
@@ -70,9 +74,9 @@
         "prior_assessment_count": 0,
         "timestamp": "2026-01-01T00:00:00Z"
       },
-      "canonical_without_proof_hash": "{\"additional_appeal_limit_datetime\":\"2026-01-04T00:00:00Z\",\"assessment\":{\"actor_participation\":{\"status\":\"NOT_APPLICABLE\"},\"certification\":{\"cert_id\":\"CERT-44444444-20260101000000-0001\",\"cert_url\":\"https://rackp.example/verify/CERT-44444444-20260101000000-0001\",\"issue_date\":\"2026-01-01T00:00:00Z\"},\"detailed_report\":{\"report_hash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"report_url\":\"https://rackp.example/reports/44444444-4444-4444-8444-444444444444\"},\"evidence_sufficiency\":{\"actor_coverage\":\"MEDIUM\",\"assessment_status\":\"DEFINITIVE\",\"claimant_coverage\":\"MEDIUM\"},\"factual_findings\":\"Both parties' anchor chains verified against submitted evidence.\",\"fault\":{\"actor_fault\":0.5,\"claimant_fault\":0.5,\"confidence\":\"HIGH\",\"external_factor\":0},\"fee_compliance\":{\"actor_fee_status\":\"DEPOSITED\",\"claimant_fee_status\":\"DEPOSITED\",\"fee_snapshot\":{\"actor_expected\":100,\"claimant_expected\":100,\"currency\":\"USD\",\"total_amount\":100}},\"norms_used\":[\"rackp.standard.v1\"],\"provenance_score\":{\"actor_provenance\":{\"ai_ratio\":0.8,\"human_ratio\":0.2},\"claimant_provenance\":{\"ai_ratio\":0.9,\"human_ratio\":0.1},\"confidence_level\":\"HIGH\"}},\"evidence_provenance\":\"actor=VERIFIED, claimant=VERIFIED\",\"incident_id\":\"44444444-4444-4444-8444-444444444444\",\"network\":\"TESTNET\",\"prior_assessment_count\":0,\"rackp_version\":\"0.2.0-alpha\",\"referee_id\":\"55555555-5555-4555-8555-555555555555\",\"referee_reputation_snapshot\":{\"snapshot_timestamp\":\"2026-01-01T00:00:00Z\",\"total_assessments\":1},\"timestamp\":\"2026-01-01T00:00:00Z\",\"type\":\"CONTRIBUTION_RESULT\"}",
-      "proof_hash": "bbe6ef87a0e101a3740b6f1287cc6de7a9f9622d5ffbe3d045c859b999a556d5",
-      "signature": "WUywENG2EJtHdblKkpzDHzAvPBgR2rIjkFFnIird2uvyq6vnZMkzaJXRmjPfpKMd-fT-0qOWk4IjQfHsq-wtBA",
+      "canonical_without_proof_hash": "{\"additional_appeal_limit_datetime\":\"2026-01-04T00:00:00Z\",\"assessment\":{\"actor_participation\":{\"status\":\"NOT_APPLICABLE\"},\"certification\":{\"cert_id\":\"CERT-44444444-20260101000000-0001\",\"cert_url\":\"https://rackp.example/verify/CERT-44444444-20260101000000-0001\",\"issue_date\":\"2026-01-01T00:00:00Z\"},\"detailed_report\":{\"report_hash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"report_url\":\"https://rackp.example/reports/44444444-4444-4444-8444-444444444444\"},\"evidence_sufficiency\":{\"actor_coverage\":\"MEDIUM\",\"assessment_status\":\"DEFINITIVE\",\"claimant_coverage\":\"MEDIUM\"},\"factual_findings\":\"Both parties' anchor chains verified against submitted evidence.\",\"fault\":{\"actor_fault\":0.5,\"claimant_fault\":0.5,\"confidence\":\"HIGH\",\"external_factor\":0},\"fee_compliance\":{\"actor_fee_status\":\"DEPOSITED\",\"claimant_fee_status\":\"DEPOSITED\",\"fee_snapshot\":{\"actor_expected\":100,\"claimant_expected\":100,\"currency\":\"USD\",\"total_amount\":100}},\"norms_used\":[{\"applied_document_hash\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"declared_document_hash\":\"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\",\"profile_id\":\"rackp.standard.v1\"}],\"provenance_score\":{\"actor_provenance\":{\"ai_ratio\":0.8,\"human_ratio\":0.2},\"claimant_provenance\":{\"ai_ratio\":0.9,\"human_ratio\":0.1},\"confidence_level\":\"HIGH\"}},\"evidence_provenance\":\"actor=VERIFIED, claimant=VERIFIED\",\"incident_id\":\"44444444-4444-4444-8444-444444444444\",\"network\":\"TESTNET\",\"prior_assessment_count\":0,\"rackp_version\":\"0.0.0-example\",\"referee_id\":\"55555555-5555-4555-8555-555555555555\",\"referee_reputation_snapshot\":{\"snapshot_timestamp\":\"2026-01-01T00:00:00Z\",\"total_assessments\":1},\"timestamp\":\"2026-01-01T00:00:00Z\",\"type\":\"CONTRIBUTION_RESULT\"}",
+      "proof_hash": "ed6b4e78c110707510677ec830e0ecb1ba59154635a3772d44182afb7c5c0e36",
+      "signature": "BfsWTH1fZbHGvUCRapdkIFVDWOYeyNggdwTj0VFaiyljQI5fNlYZFYC0nh_cX9C5UvPwOACexyaOH3h7Crc6BA",
       "artifact": {
         "additional_appeal_limit_datetime": "2026-01-04T00:00:00Z",
         "assessment": {
@@ -83,7 +87,7 @@
             "cert_id": "CERT-44444444-20260101000000-0001",
             "cert_url": "https://rackp.example/verify/CERT-44444444-20260101000000-0001",
             "issue_date": "2026-01-01T00:00:00Z",
-            "proof_hash": "bbe6ef87a0e101a3740b6f1287cc6de7a9f9622d5ffbe3d045c859b999a556d5"
+            "proof_hash": "ed6b4e78c110707510677ec830e0ecb1ba59154635a3772d44182afb7c5c0e36"
           },
           "detailed_report": {
             "report_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -112,7 +116,11 @@
             }
           },
           "norms_used": [
-            "rackp.standard.v1"
+            {
+              "applied_document_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "declared_document_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+              "profile_id": "rackp.standard.v1"
+            }
           ],
           "provenance_score": {
             "actor_provenance": {
@@ -130,7 +138,7 @@
         "incident_id": "44444444-4444-4444-8444-444444444444",
         "network": "TESTNET",
         "prior_assessment_count": 0,
-        "rackp_version": "0.2.0-alpha",
+        "rackp_version": "0.0.0-example",
         "referee_id": "55555555-5555-4555-8555-555555555555",
         "referee_reputation_snapshot": {
           "snapshot_timestamp": "2026-01-01T00:00:00Z",
@@ -138,14 +146,14 @@
         },
         "timestamp": "2026-01-01T00:00:00Z",
         "type": "CONTRIBUTION_RESULT",
-        "signature": "WUywENG2EJtHdblKkpzDHzAvPBgR2rIjkFFnIird2uvyq6vnZMkzaJXRmjPfpKMd-fT-0qOWk4IjQfHsq-wtBA"
+        "signature": "BfsWTH1fZbHGvUCRapdkIFVDWOYeyNggdwTj0VFaiyljQI5fNlYZFYC0nh_cX9C5UvPwOACexyaOH3h7Crc6BA"
       }
     },
     {
       "description": "POH_CERTIFICATE: top-level exclusion, proof_hash beside signature",
       "artifact_without_proof_hash": {
         "type": "POH_CERTIFICATE",
-        "rackp_version": "0.2.0-alpha",
+        "rackp_version": "0.0.0-example",
         "cert_id": "66666666-6666-4666-8666-666666666666",
         "issue_date": "2026-01-01T00:00:00Z",
         "referee_id": "55555555-5555-4555-8555-555555555555",
@@ -173,9 +181,9 @@
         "subject_data_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "cert_url": "https://rackp.example/phi/66666666-6666-4666-8666-666666666666"
       },
-      "canonical_without_proof_hash": "{\"anchor_range\":{\"end\":\"2026-01-01T00:05:00Z\",\"start\":\"2026-01-01T00:00:00Z\"},\"cert_id\":\"66666666-6666-4666-8666-666666666666\",\"cert_url\":\"https://rackp.example/phi/66666666-6666-4666-8666-666666666666\",\"issue_date\":\"2026-01-01T00:00:00Z\",\"keeper\":{\"keeper_id\":\"77777777-7777-4777-8777-777777777777\",\"keeper_public_key\":\"A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg\"},\"norms_used\":[{\"applied_document_hash\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"declared_document_hash\":\"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\",\"profile_id\":\"rackp.standard.v1\"}],\"provenance\":{\"ai_ratio\":0,\"confidence_level\":\"HIGH\",\"human_ratio\":1},\"rackp_version\":\"0.2.0-alpha\",\"referee_id\":\"55555555-5555-4555-8555-555555555555\",\"subject_data_hash\":\"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"subject_terminal_id\":\"11111111-1111-4111-8111-111111111111\",\"type\":\"POH_CERTIFICATE\"}",
-      "proof_hash": "5dbc1e459c96521044fad153e527a1844cec428687fed5205231e28066705ad9",
-      "signature": "hqQ83bi80ykjaEMUm8Ug-cA_3lYIQ1OwKCv4xONskfCcRCf49frkwdb6Nlt3f9M-NgcqxQHbZbcuoY1e36zjBw",
+      "canonical_without_proof_hash": "{\"anchor_range\":{\"end\":\"2026-01-01T00:05:00Z\",\"start\":\"2026-01-01T00:00:00Z\"},\"cert_id\":\"66666666-6666-4666-8666-666666666666\",\"cert_url\":\"https://rackp.example/phi/66666666-6666-4666-8666-666666666666\",\"issue_date\":\"2026-01-01T00:00:00Z\",\"keeper\":{\"keeper_id\":\"77777777-7777-4777-8777-777777777777\",\"keeper_public_key\":\"A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg\"},\"norms_used\":[{\"applied_document_hash\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"declared_document_hash\":\"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\",\"profile_id\":\"rackp.standard.v1\"}],\"provenance\":{\"ai_ratio\":0,\"confidence_level\":\"HIGH\",\"human_ratio\":1},\"rackp_version\":\"0.0.0-example\",\"referee_id\":\"55555555-5555-4555-8555-555555555555\",\"subject_data_hash\":\"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"subject_terminal_id\":\"11111111-1111-4111-8111-111111111111\",\"type\":\"POH_CERTIFICATE\"}",
+      "proof_hash": "ed67097df3daf9877b5e5acade8f9548a0f807b1aa6667429b14f5ceebe9cba9",
+      "signature": "P6yfwluqMWMeedr0GBfw3QsMtlJTXDAMSJvdMBu93IrSECxNtSmu5qm-iyZA-kC2pNmADjG6vE0CLWfbDNQqBg",
       "artifact": {
         "anchor_range": {
           "end": "2026-01-01T00:05:00Z",
@@ -200,13 +208,13 @@
           "confidence_level": "HIGH",
           "human_ratio": 1
         },
-        "rackp_version": "0.2.0-alpha",
+        "rackp_version": "0.0.0-example",
         "referee_id": "55555555-5555-4555-8555-555555555555",
         "subject_data_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "subject_terminal_id": "11111111-1111-4111-8111-111111111111",
         "type": "POH_CERTIFICATE",
-        "proof_hash": "5dbc1e459c96521044fad153e527a1844cec428687fed5205231e28066705ad9",
-        "signature": "hqQ83bi80ykjaEMUm8Ug-cA_3lYIQ1OwKCv4xONskfCcRCf49frkwdb6Nlt3f9M-NgcqxQHbZbcuoY1e36zjBw"
+        "proof_hash": "ed67097df3daf9877b5e5acade8f9548a0f807b1aa6667429b14f5ceebe9cba9",
+        "signature": "P6yfwluqMWMeedr0GBfw3QsMtlJTXDAMSJvdMBu93IrSECxNtSmu5qm-iyZA-kC2pNmADjG6vE0CLWfbDNQqBg"
       }
     }
   ]

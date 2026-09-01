@@ -9,7 +9,7 @@ from datetime import datetime, timezone, timedelta
 # date records what the specification said rather than what the issuer had adopted,
 # and §10 leaves migration to each implementor. Raised in CHANGELOG.md whenever the
 # meaning of a field, the set of required fields, or a computation changes.
-RACKP_VERSION = "0.2.0-alpha"
+RACKP_VERSION = "0.3.0-alpha"
 
 
 class Referee(Agent):
@@ -337,15 +337,20 @@ class Referee(Agent):
         computed_hash = hash_claim(msg["payload"]["raw_data"])
         reported_hash = v["stored_hash"]
 
-        # Cross-check: record discrepancy if computed hash differs from self-reported stored_hash
+        # Cross-check: record discrepancy if computed hash differs from self-reported stored_hash.
+        # RACKP-STD-001 "Evidence Integrity" (rackp.standard.v1) is the norm this violates; a bare
+        # norm_id would not resolve to it once more than one profile is in play (§9.1), so
+        # profile_id rides along.
         if computed_hash != reported_hash:
             print(f"[R] HASH DISCREPANCY: submitter={submitter_id}"
                   f"  computed={computed_hash[:8]}...  reported={reported_hash[:8]}...")
             inc = self._incidents.setdefault(incident_id, {})
-            inc.setdefault("hash_discrepancies", []).append(
-                f"{submitter_id}: payload hash mismatch"
-                f" (computed={computed_hash[:8]}... reported={reported_hash[:8]}...)"
-            )
+            inc.setdefault("hash_discrepancies", []).append({
+                "profile_id": self.STANDARD_NORM,
+                "norm_id": "RACKP-STD-001",
+                "detail": f"{submitter_id}: payload hash mismatch"
+                          f" (computed={computed_hash[:8]}... reported={reported_hash[:8]}...)",
+            })
 
         # Use computed hash (not self-reported) for Keeper verification
         self._pending_verifications[computed_hash] = (incident_id, submitter_id)
@@ -620,6 +625,34 @@ class Referee(Agent):
             norms_used.update(pn if pn else [self.STANDARD_NORM])
         norms_used = sorted(norms_used) if norms_used else [self.STANDARD_NORM]
 
+        # declared_document_hash per profile (§8.4/§9.5): merged across both parties,
+        # since either may have declared one for a profile both ended up assessed under.
+        # A genuine conflict (actor and claimant declaring different hashes for the same
+        # profile_id) is not expected under §9.4's convention -- a real revision gets a
+        # new profile_id -- and is not disambiguated here; whichever party's declaration
+        # is seen first wins.
+        declared_hashes_by_profile = {}
+        for party_tid in (actor_id, claimant_id):
+            if not party_tid:
+                continue
+            for pid, doc_hash in inc.get("declared_document_hashes", {}).get(party_tid, {}).items():
+                declared_hashes_by_profile.setdefault(pid, doc_hash)
+
+        # norms_used entries (§9.5): same shape as POH_CERTIFICATE's (§8.4) -- profile_id
+        # and applied_document_hash always, declared_document_hash where a party declared
+        # one for that profile. profile_id/norm_fetch_url stay constant across a revision
+        # (§9.4), so neither identifies the document a fault value was actually computed
+        # against; the hash does.
+        norms_used_entries = [
+            {
+                "profile_id": pid,
+                "applied_document_hash": hash_norm_document(pid),
+                **({"declared_document_hash": declared_hashes_by_profile[pid]}
+                   if pid in declared_hashes_by_profile else {}),
+            }
+            for pid in norms_used
+        ]
+
         self._assessment_count += 1
         now = datetime.now(timezone.utc)
         now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -658,7 +691,7 @@ class Referee(Agent):
                     "claimant_provenance": {"human_ratio": 0.1, "ai_ratio": 0.9},
                     "confidence_level": confidence
                 },
-                "norms_used": norms_used,
+                "norms_used": norms_used_entries,
                 **({"norm_jurisdiction_mismatch": norm_mismatch} if norm_mismatch else {}),
                 "detailed_report": {
                     "report_url":  f"https://rackp.example/reports/{incident_id}",

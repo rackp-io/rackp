@@ -7,6 +7,7 @@
 # Phase 4: Referee issues CONTRIBUTION_RESULT
 # Section 7 Verification Outcome Table: VERIFIED/VERIFIED → actor_fault=0.5, claimant_fault=0.5, confidence=HIGH
 from classes.topology import standard_world
+from classes.Hasher import hash_claim, hash_norm_document
 
 def run():
     # Canonical topology: Kr/Kc/Ka, one Keeper per party; R's profile published.
@@ -72,7 +73,6 @@ def run():
     # nothing else — a regression lock on that exclusion, not just on the field's
     # presence. Uses the sim's own Hasher, so this checks internal consistency
     # within the simulation, not cross-implementation JCS (see Hasher.hash_claim).
-    from classes.Hasher import hash_claim
     stripped = {k: v for k, v in result.items() if k != "signature"}
     stripped["assessment"] = {**stripped["assessment"],
                               "certification": {k: v for k, v in stripped["assessment"]["certification"].items()
@@ -91,7 +91,12 @@ def run():
         f"fault shares must sum to 1.0, got {fault}"
     assert verdict["technical_violation"] == [], "an honest flow has no technical violations"
     # The Referee assessed under exactly the declared Norm (§9.3).
-    assert verdict["norms_used"] == ["rackp.standard.v1"], f"got {verdict['norms_used']}"
+    # norms_used (§9.5, rackp#15): {profile_id, applied_document_hash} per profile, same
+    # shape as POH_CERTIFICATE.norms_used (§8.4) -- neither party declared a
+    # norm_document_hash here, so no declared_document_hash entry is expected.
+    assert verdict["norms_used"] == [
+        {"profile_id": "rackp.standard.v1", "applied_document_hash": hash_norm_document("rackp.standard.v1")}
+    ], f"got {verdict['norms_used']}"
     # Each party's provenance ratios partition 1.0 (§8).
     for role in ("actor_provenance", "claimant_provenance"):
         p = verdict["provenance_score"][role]

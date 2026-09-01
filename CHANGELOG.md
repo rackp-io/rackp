@@ -9,6 +9,28 @@ Versions are `0.x` while the core semantics layer is a draft. Per semantic versi
 release may change anything; the minor number is raised whenever the meaning of a field, the
 set of required fields, or a computation changes. Editorial revisions do not raise it.
 
+## 0.3.0-alpha
+
+Unreleased.
+
+### Changed
+
+- `CONTRIBUTION_RESULT`: `assessment.norms_used` is now an array of
+  `{profile_id, applied_document_hash, declared_document_hash?}`, the same shape
+  `POH_CERTIFICATE.norms_used` already used. It was a plain array of `profile_id` strings,
+  which had no way to pin the text a fault value was actually computed against — a
+  `profile_id` and its `norm_fetch_url` stay constant across a revision (Section 9.4)
+  ([#15](https://github.com/rackp-io/rackp/issues/15)).
+- `CONTRIBUTION_RESULT`: `assessment.technical_violation` entries are now
+  `{profile_id, norm_id, detail?}` rather than a bare string. A `norm_id` is unique only
+  within its profile, and Section 9.1 has every profile layer on the Standard Norm, so more
+  than one profile is normally in play; a bare `norm_id` did not resolve to one
+  ([#15](https://github.com/rackp-io/rackp/issues/15)).
+- Section 9.3's "Session-scoped Norm lock" paragraph no longer describes in-place Norm
+  revision or the terminal fetching the document from the Keeper. Both were superseded by
+  Section 9.4's revision convention (0.2.0-alpha) without being brought along
+  ([#15](https://github.com/rackp-io/rackp/issues/15)).
+
 ## 0.2.0-alpha
 
 Released 2026-08-12.
