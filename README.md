@@ -1,6 +1,6 @@
 ﻿# <img src="docs/images/logo.png" width="32" alt=""> RACK Protocol (Referee-Actor-Claimant-Keeper)
 
-[![License: Source Available](https://img.shields.io/badge/License-Source%20Available-blue.svg)](LICENSE)
+[![License: RACKP License](https://img.shields.io/badge/License-RACKP%20License-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/github/v/tag/rackp-io/rackp?sort=semver&label=version&color=blue)](CHANGELOG.md)
 [![Field](https://img.shields.io/badge/Focus-AI_Governance_%26_Trust-green.svg)]()
 
@@ -33,7 +33,7 @@
 - [Transport Binding](docs/TRANSPORT-BINDING.md) — how RFC-0001 messages map onto HTTP
 - [FAQ](FAQ.md) — problem, protocol, design decisions, use cases, funding
 - [Contributing](CONTRIBUTING.md) — where to start depending on what you want to do
-- [License](LICENSE) — source-available, patent pending
+- [License](LICENSE) — only issuing Referee artifacts is licensed; see also the [patent commitment](PATENTS.md)
 
 ---
 
@@ -209,7 +209,7 @@ obligations, rather than remain a default hub.
 
 ## 🤝 Contributing
 
-RACKP is an open-protocol project aiming to be a **neutral technical standard** not controlled by any single company or organization. The specification is openly published; the reference implementation is provided under a source-available license.
+RACKP is an open-protocol project aiming to be a **neutral technical standard** not controlled by any single company or organization. The specification is openly published, and the Keeper and Claimant reference implementations are open source (Apache-2.0). The one licensed act is issuing assessment artifacts as a Referee operator (see [LICENSE](LICENSE) and [PATENTS.md](PATENTS.md)).
 We welcome contributions in all forms: architectural discussion, technical norm definition, security auditing, and more.
 
 → See [CONTRIBUTING.md](CONTRIBUTING.md) for where to start depending on what you want to do.

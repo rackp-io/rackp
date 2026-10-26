@@ -47,4 +47,4 @@ For significant design changes, please open an Issue first to discuss the direct
 
 ## License
 
-RACKP is source-available: you may read, implement, and operate it — including commercial implementations — under the terms in [LICENSE](LICENSE), which is the authoritative source for all usage and fee terms. In structural terms, anchoring and Keeper (K) operation carry no license fee to RACKP; a per-artifact license fee (on each issued CONTRIBUTION_RESULT and POH_CERTIFICATE) applies only to Referee (R) operators, and only beyond a free tier. See [LICENSE](LICENSE) for the exact thresholds, amounts, and exemptions.
+Implementing and operating Keeper (K), Actor (A), and Claimant (C) nodes, anchoring evidence, and authoring Norms need no license and carry no fee; [PATENTS.md](PATENTS.md) commits RACKP not to assert its patents against them. The one licensed act is issuing billable artifacts (CONTRIBUTION_RESULTs and POH_CERTIFICATEs) as a Referee (R) operator, which carries a per-artifact fee beyond a free tier. [LICENSE](LICENSE) is the authoritative source for the exact thresholds, amounts, and exemptions.

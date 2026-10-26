@@ -1,4 +1,4 @@
-RACK Protocol (RACKP) — Source-Available License
+RACK Protocol (RACKP) License
 Copyright (c) 2026 RACKP Project. All rights reserved.
 
 Patent pending.
@@ -7,10 +7,17 @@ Patent pending.
 
 ACCEPTANCE
 
-By implementing, deploying, or operating any component of this Protocol
-(including Referee (R), Keeper (K), Actor (A), or Claimant (C) nodes),
-you agree to the terms of this license. If you do not agree, you may not
-use the Protocol for those purposes.
+This license governs one act: issuing billable artifacts
+(CONTRIBUTION_RESULTs and POH_CERTIFICATEs) as the operator of a Referee
+(R) node. By issuing billable artifacts, you agree to the terms of this
+license. If you do not agree, you may not issue billable artifacts under
+the Protocol.
+
+Implementing, deploying, or operating Keeper (K), Actor (A), or Claimant
+(C) nodes, anchoring evidence, and authoring or publishing Norm Profiles
+do not require accepting this license. RACKP's patent commitment covering
+those activities, and covering Referee operation in compliance with this
+license, is set out in PATENTS.md.
 
 ---
 
@@ -19,10 +26,9 @@ GRANT OF RIGHTS
 Permission is granted, free of charge, to any person obtaining a copy of
 this specification and associated materials (the "Protocol"), to:
 
-  - read, study, and evaluate the Protocol for any purpose;
-  - implement the Protocol for academic, research, or non-commercial use;
-  - build and operate open-source or commercial implementations of the
-    Protocol, subject to the license fee terms below.
+  - read, study, evaluate, and implement the Protocol for any purpose;
+  - operate Referee (R) nodes and issue billable artifacts, including
+    commercially, subject to the license fee terms below.
 
 ---
 

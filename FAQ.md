@@ -87,6 +87,11 @@ RACKP before exceeding the threshold.
 Running infrastructure, anchoring evidence, and Keeper node operation carry
 no license fee.
 
+[PATENTS.md](PATENTS.md) makes the defensive intent binding: RACKP commits
+not to assert its patents against Keeper, Actor, or Claimant operation,
+anchoring, Norm authoring, or Referee operation that complies with the
+LICENSE.
+
 ---
 
 **Q: How does billing work? Are the first assessments really free?**
